@@ -113,122 +113,331 @@ const EXAM_INFO = {
     name: 'JEE Main',
     site: 'https://jeemain.nta.nic.in',
     body: 'National Testing Agency (NTA)',
-    timeline: 'Two sessions a year. Session 1 registration late Oct–Nov, exam in January. Session 2 registration in February, exam in April.'
+    category: 'Engineering & Tech',
+    badge: 'National Level',
+    months: ['jan', 'feb', 'apr', 'oct', 'nov'],
+    keyDates: 'Oct–Nov Reg (S1) • Jan Exam (S1) • Feb Reg (S2) • Apr Exam (S2)',
+    timeline: 'Two sessions a year. Session 1 registration late Oct–Nov, exam in January. Session 2 registration in February, exam in April.',
+    schedule: [
+      { month: 'oct', phase: 'Registration', text: 'Session 1 Registration opens late October' },
+      { month: 'nov', phase: 'Registration', text: 'Session 1 Application deadline & correction window' },
+      { month: 'jan', phase: 'Exam Window', text: 'Session 1 Computer-Based Test (CBT) across India' },
+      { month: 'feb', phase: 'Registration', text: 'Session 2 Online Registration window opens' },
+      { month: 'apr', phase: 'Exam Window', text: 'Session 2 Exam window & All India Ranks declaration' }
+    ]
   },
   jeeadv: {
     name: 'JEE Advanced',
     site: 'https://jeeadv.ac.in',
-    body: 'A rotating IIT (only for JEE Main top scorers)',
-    timeline: 'Registration opens right after JEE Main results, in April. Exam is held in mid-to-late May, same year.'
+    body: 'IIT Organizing Committee',
+    category: 'Engineering & Tech',
+    badge: 'IIT Entrance',
+    months: ['apr', 'may', 'jun'],
+    keyDates: 'Apr Registration • Mid-to-Late May Exam',
+    timeline: 'Registration opens right after JEE Main results, in April. Exam is held in mid-to-late May, same year.',
+    schedule: [
+      { month: 'apr', phase: 'Registration', text: 'Registration opens for top 2.5 Lakh JEE Main qualifiers' },
+      { month: 'may', phase: 'Exam Window', text: 'Two compulsory 3-hour papers (Paper 1 & Paper 2)' },
+      { month: 'jun', phase: 'Results & JoSAA', text: 'Rank list release & JoSAA seat allocation rounds start' }
+    ]
   },
   bitsat: {
     name: 'BITSAT',
     site: 'https://www.bitsadmission.com',
     body: 'BITS Pilani',
-    timeline: 'Session 1 registration runs December–March, exam in mid-April. Session 2 registration in April–May, exam in late May.'
+    category: 'Engineering & Tech',
+    badge: 'Premier University',
+    months: ['dec', 'jan', 'feb', 'mar', 'apr', 'may'],
+    keyDates: 'Dec–Mar Session 1 Reg • Apr & May Exams',
+    timeline: 'Session 1 registration runs December–March, exam in mid-April. Session 2 registration in April–May, exam in late May.',
+    schedule: [
+      { month: 'dec', phase: 'Registration', text: 'Session 1 online application portal opens' },
+      { month: 'jan', phase: 'Registration', text: 'Application window active for all campus courses' },
+      { month: 'feb', phase: 'Registration', text: 'Application window active' },
+      { month: 'mar', phase: 'Deadline', text: 'Session 1 registration closes & slot booking begins' },
+      { month: 'apr', phase: 'Exam Window', text: 'Session 1 online computer-based exam' },
+      { month: 'may', phase: 'Exam Window', text: 'Session 2 online exam across multiple slots' }
+    ]
   },
   statecet: {
-    name: 'State CET',
+    name: 'State CET (MHT-CET, KCET, WBJEE)',
     site: null,
-    body: "Your state's CET cell (varies by state, e.g. MHT-CET for Maharashtra)",
-    timeline: "Typically registration in February–March with the exam in April–May, but this varies by state — check your own state's CET cell website."
+    body: "State CET Cells / Boards",
+    category: 'Engineering & Tech',
+    badge: 'State Level',
+    months: ['feb', 'mar', 'apr', 'may'],
+    keyDates: 'Feb–Mar Reg • Apr–May State Exams',
+    timeline: "Typically registration in February–March with the exam in April–May, but this varies by state — check your own state's CET cell website.",
+    schedule: [
+      { month: 'feb', phase: 'Registration', text: 'State CET portals release official notification and forms' },
+      { month: 'mar', phase: 'Registration', text: 'Form filling and state domicile verification' },
+      { month: 'apr', phase: 'Exam Window', text: 'State engineering & technology entrance exams commence' },
+      { month: 'may', phase: 'Exam Window', text: 'PCB/PCM exams conclude and answer keys released' }
+    ]
   },
   neetug: {
     name: 'NEET-UG',
     site: 'https://neet.nta.nic.in',
     body: 'National Testing Agency (NTA)',
-    timeline: 'Registration in February–March. Exam is traditionally the first Sunday of May, with results by June–July.'
+    category: 'Medicine & Health',
+    badge: 'All India Medical',
+    months: ['feb', 'mar', 'may', 'jun', 'jul'],
+    keyDates: 'Feb–Mar Reg • 1st Sunday of May Exam • Jun/Jul Results',
+    timeline: 'Registration in February–March. Exam is traditionally the first Sunday of May, with results by June–July.',
+    schedule: [
+      { month: 'feb', phase: 'Registration', text: 'NTA releases NEET-UG bulletin and registration begins' },
+      { month: 'mar', phase: 'Registration', text: 'Registration deadline and image correction window' },
+      { month: 'may', phase: 'Exam Window', text: 'Pen-and-paper national exam on the 1st Sunday of May' },
+      { month: 'jun', phase: 'Results', text: 'All India Ranks & official scorecards announced' },
+      { month: 'jul', phase: 'Counselling', text: 'MCC 15% AIQ and 85% State quota counselling begins' }
+    ]
   },
   stateuniv: {
-    name: 'State / university entrance',
+    name: 'State / University Paramedical & Health Entrance',
     site: null,
-    body: 'Varies by institution',
-    timeline: "Dates vary by state and college — check your target institution's admissions page directly."
+    body: 'Target Medical Colleges & Universities',
+    category: 'Medicine & Health',
+    badge: 'University Level',
+    months: ['apr', 'may', 'jun', 'jul'],
+    keyDates: 'Apr–May Reg • Jun–Jul Admissions',
+    timeline: "Dates vary by state and college — check your target institution's admissions page directly.",
+    schedule: [
+      { month: 'apr', phase: 'Registration', text: 'Allied health & pharmacy admission portals open' },
+      { month: 'may', phase: 'Application', text: 'Merit registration & verification window' },
+      { month: 'jun', phase: 'Admissions', text: 'Entrance test / 12th board merit list released' },
+      { month: 'jul', phase: 'Counselling', text: 'Document verification and seat allotment' }
+    ]
   },
   cafoundation: {
     name: 'CA Foundation',
     site: 'https://www.icai.org',
     body: 'Institute of Chartered Accountants of India (ICAI)',
-    timeline: 'Held three times a year — January, May/June, and September. Register roughly 4 months before your chosen session.'
+    category: 'Commerce & Finance',
+    badge: 'Professional Certification',
+    months: ['jan', 'may', 'jun', 'sep', 'dec'],
+    keyDates: 'Trimester Exams: Jan, May/Jun, Sep',
+    timeline: 'Held three times a year — January, May/June, and September. Register roughly 4 months before your chosen session.',
+    schedule: [
+      { month: 'jan', phase: 'Exam Window', text: 'January Examination Session' },
+      { month: 'may', phase: 'Exam Window', text: 'May/June Examination Session' },
+      { month: 'jun', phase: 'Exam Window', text: 'June Examination Session' },
+      { month: 'sep', phase: 'Exam Window', text: 'September Examination Session' },
+      { month: 'dec', phase: 'Registration', text: 'Mandatory 4-month study period registration cycle' }
+    ]
   },
   cuet: {
     name: 'CUET UG',
     site: 'https://cuet.nta.nic.in',
     body: 'National Testing Agency (NTA)',
-    timeline: 'Registration in February–March, with the exam window running through May.'
+    category: 'Multi-Stream / Central Univ',
+    badge: 'Central Universities',
+    months: ['feb', 'mar', 'may', 'jun'],
+    keyDates: 'Feb–Mar Reg • May Multi-Slot Exam Window',
+    timeline: 'Registration in February–March, with the exam window running through May.',
+    schedule: [
+      { month: 'feb', phase: 'Registration', text: 'Common University Entrance Test (CUET UG) forms open' },
+      { month: 'mar', phase: 'Registration', text: 'Subject domain selection and university choices deadline' },
+      { month: 'may', phase: 'Exam Window', text: 'Multi-slot Computer-Based Test across India' },
+      { month: 'jun', phase: 'Results', text: 'Normalized percentile scores declared for university admissions' }
+    ]
   },
   bbaentrance: {
-    name: 'University-specific BBA entrance',
+    name: 'Management Entrances (IPMAT, NPAT, SET)',
     site: null,
-    body: 'Varies by university',
-    timeline: "Most run alongside CUET, February–May — check your target university's admissions page."
+    body: 'IIM Indore / Rohtak, NMIMS, Symbiosis',
+    category: 'Commerce & Management',
+    badge: 'Top B-Schools',
+    months: ['feb', 'mar', 'apr', 'may', 'jun'],
+    keyDates: 'Feb–Apr Reg • May–Jun Tests & Interviews',
+    timeline: "Most run alongside CUET, February–May — check your target university's admissions page.",
+    schedule: [
+      { month: 'feb', phase: 'Registration', text: 'IPMAT (5-Year Integrated Program) & NPAT forms release' },
+      { month: 'mar', phase: 'Registration', text: 'SET and private university management forms active' },
+      { month: 'apr', phase: 'Deadline', text: 'Admit cards distributed & test centre allocations' },
+      { month: 'may', phase: 'Exam Window', text: 'IPMAT, NPAT, SET entrance tests conducted' },
+      { month: 'jun', phase: 'Interviews', text: 'Personal Interview (PI) & Written Ability Test (WAT)' }
+    ]
   },
   uceed: {
-    name: 'UCEED',
+    name: 'UCEED (B.Des IITs)',
     site: 'https://uceed.iitb.ac.in',
     body: 'IIT Bombay',
-    timeline: 'Registration opens in October and closes by early November. Exam is held in mid-January.'
+    category: 'Design & Creative Arts',
+    badge: 'IIT Design',
+    months: ['oct', 'nov', 'jan', 'mar'],
+    keyDates: 'Oct–Nov Reg • Mid-Jan National Exam',
+    timeline: 'Registration opens in October and closes by early November. Exam is held in mid-January.',
+    schedule: [
+      { month: 'oct', phase: 'Registration', text: 'UCEED portal opens for B.Des at IIT Bombay, Delhi, Guwahati, etc.' },
+      { month: 'nov', phase: 'Registration', text: 'Regular application closes; late fee window open' },
+      { month: 'jan', phase: 'Exam Window', text: 'Part A (Computer-Based) & Part B (Drawing/Design) Exam' },
+      { month: 'mar', phase: 'Results', text: 'Rank list release & B.Des joint seat allocation begins' }
+    ]
   },
   niddat: {
-    name: 'NID DAT',
+    name: 'NID DAT (Prelims & Mains)',
     site: 'https://admissions.nid.edu',
     body: 'National Institute of Design',
-    timeline: 'Registration October–December. Prelims held in December, Mains in March–April.'
+    category: 'Design & Creative Arts',
+    badge: 'National Design',
+    months: ['oct', 'nov', 'dec', 'mar', 'apr', 'may'],
+    keyDates: 'Oct–Dec Reg • Dec Prelims • Apr Mains',
+    timeline: 'Registration October–December. Prelims held in December, Mains in March–April.',
+    schedule: [
+      { month: 'oct', phase: 'Registration', text: 'NID DAT registration opens for all NID campuses' },
+      { month: 'nov', phase: 'Registration', text: 'Online form submission & category certificate verification' },
+      { month: 'dec', phase: 'Prelims Exam', text: 'NID DAT Design Aptitude Test Prelims' },
+      { month: 'mar', phase: 'Results', text: 'Prelims result announcement & DAT Mains shortlist' },
+      { month: 'apr', phase: 'Mains Exam', text: 'DAT Mains (Studio Test & Personal Interviews)' },
+      { month: 'may', phase: 'Final Merit', text: 'Final rank list & campus allotment' }
+    ]
   },
   niftentrance: {
     name: 'NIFT Entrance Exam',
     site: 'https://www.nift.ac.in',
     body: 'National Institute of Fashion Technology (via NTA)',
-    timeline: 'Registration December–January. Written exam (CAT & GAT) held in early February, results by April.'
+    category: 'Design & Fashion',
+    badge: 'National Fashion & Tech',
+    months: ['dec', 'jan', 'feb', 'apr', 'may'],
+    keyDates: 'Dec–Jan Reg • Feb CAT & GAT • Apr Situation Test',
+    timeline: 'Registration December–January. Written exam (CAT & GAT) held in early February, results by April.',
+    schedule: [
+      { month: 'dec', phase: 'Registration', text: 'Online application notification and registration opens' },
+      { month: 'jan', phase: 'Deadline', text: 'Last date for submission without late fees' },
+      { month: 'feb', phase: 'Written Exam', text: 'Creative Ability Test (CAT) & General Ability Test (GAT)' },
+      { month: 'apr', phase: 'Situation Test', text: 'Situation Test for B.Des shortlisted candidates' },
+      { month: 'may', phase: 'Counselling', text: 'Seat allocation across 18 NIFT campuses nationwide' }
+    ]
   },
   collegespecific: {
-    name: 'College-specific portfolio / interview',
+    name: 'Private Design Portfolio & Studio Tests',
     site: null,
-    body: 'Varies by institution',
-    timeline: 'Usually runs alongside CUET, February–May — confirm directly with each college.'
+    body: 'Srishti, Pearl, UID, MIT-ID',
+    category: 'Design & Media',
+    badge: 'Studio Test',
+    months: ['feb', 'mar', 'apr', 'may', 'jun'],
+    keyDates: 'Feb–May Portfolios & Studio Rounds',
+    timeline: 'Usually runs alongside CUET, February–May — confirm directly with each college.',
+    schedule: [
+      { month: 'feb', phase: 'Portfolios', text: 'Portfolio submission and creative brief deadlines' },
+      { month: 'mar', phase: 'Interviews', text: 'Studio material challenges and personal interviews' },
+      { month: 'apr', phase: 'Offers', text: 'Merit lists and provisional admission letters' },
+      { month: 'may', phase: 'Admissions', text: 'Seat confirmation and fee payment' }
+    ]
   },
   duentrance: {
-    name: 'University-specific entrance',
+    name: 'Media, Journalism & Mass Comm Entrances',
     site: null,
-    body: 'Varies by university',
-    timeline: "Most Delhi University courses now admit via CUET; a few specific programmes still run their own test — check the university's site."
+    body: 'IIMC, IPU, Symbiosis (SET), Central Universities',
+    category: 'Media & Communication',
+    badge: 'Media Entrance',
+    months: ['feb', 'mar', 'apr', 'may', 'jun'],
+    keyDates: 'Feb–Apr Reg • May–Jun Written & GD Rounds',
+    timeline: "Most Delhi University courses now admit via CUET; a few specific programmes still run their own test — check the university's site.",
+    schedule: [
+      { month: 'feb', phase: 'Notification', text: 'Mass Communication admission schedules released' },
+      { month: 'mar', phase: 'Registration', text: 'Online form submission & current affairs portfolio' },
+      { month: 'may', phase: 'Written Exam', text: 'Aptitude tests on media ethics, writing & awareness' },
+      { month: 'jun', phase: 'GD & Interview', text: 'Group discussions and studio trial rounds' }
+    ]
   },
   clat: {
-    name: 'CLAT',
+    name: 'CLAT (Common Law Admission Test)',
     site: 'https://consortiumofnlus.ac.in',
     body: 'Consortium of National Law Universities',
-    timeline: 'Registration opens in August and runs through October/November. Exam is held the first Sunday of December.'
+    category: 'Law & Public Policy',
+    badge: 'National Law Entrance',
+    months: ['aug', 'sep', 'oct', 'nov', 'dec'],
+    keyDates: 'Aug–Oct Reg • 1st Sunday of Dec Exam',
+    timeline: 'Registration opens in August and runs through October/November. Exam is held the first Sunday of December.',
+    schedule: [
+      { month: 'aug', phase: 'Registration', text: 'Consortium of NLUs opens CLAT online portal' },
+      { month: 'sep', phase: 'Registration', text: 'Sample question paper sets & open registration' },
+      { month: 'oct', phase: 'Deadline', text: 'Application submission deadline' },
+      { month: 'nov', phase: 'Admit Card', text: 'Hall ticket download & test guidelines published' },
+      { month: 'dec', phase: 'Exam Window', text: 'National offline exam held on 1st Sunday of December' }
+    ]
   },
   ailet: {
-    name: 'AILET',
+    name: 'AILET (NLU Delhi)',
     site: 'https://nationallawuniversitydelhi.in',
     body: 'National Law University, Delhi',
-    timeline: 'Registration opens in August. Exam is held in mid-December, only for admission to NLU Delhi.'
+    category: 'Law & Public Policy',
+    badge: 'NLU Delhi Solo',
+    months: ['aug', 'sep', 'oct', 'nov', 'dec'],
+    keyDates: 'Aug–Nov Reg • Mid-Dec Exam',
+    timeline: 'Registration opens in August. Exam is held in mid-December, only for admission to NLU Delhi.',
+    schedule: [
+      { month: 'aug', phase: 'Registration', text: 'AILET application process live for B.A. LL.B.' },
+      { month: 'sep', phase: 'Registration', text: 'Online application processing active' },
+      { month: 'nov', phase: 'Deadline', text: 'Final registration closing date' },
+      { month: 'dec', phase: 'Exam Window', text: 'Single-shift national entrance examination in mid-December' }
+    ]
   },
   upsccse: {
-    name: 'UPSC Civil Services Exam',
+    name: 'UPSC Civil Services (Reference Milestone)',
     site: 'https://upsc.gov.in',
     body: 'Union Public Service Commission',
-    timeline: 'Notification released January/February. Prelims in late May, Mains from August (spread across 5 days), interview months later.'
+    category: 'Civil Services & Policy',
+    badge: 'Post-Graduation Goal',
+    months: ['jan', 'feb', 'may', 'aug', 'sep'],
+    keyDates: 'Jan/Feb Notification • May Prelims • Aug Mains',
+    timeline: 'Notification released January/February. Prelims in late May, Mains from August (spread across 5 days), interview months later.',
+    schedule: [
+      { month: 'jan', phase: 'Notification', text: 'Official CSE notification released on upsc.gov.in' },
+      { month: 'feb', phase: 'Registration', text: 'One Time Registration (OTR) and form submission' },
+      { month: 'may', phase: 'Prelims Exam', text: 'CSAT & General Studies Preliminary Examination' },
+      { month: 'aug', phase: 'Mains Exam', text: 'Written descriptive Mains across 9 subjective papers' }
+    ]
   },
   iat: {
     name: 'IISER Aptitude Test (IAT)',
     site: 'https://iiseradmission.in',
-    body: 'IISER admission committee',
-    timeline: 'Registration March–April. Exam held in early June.'
+    body: 'IISER Admission Committee',
+    category: 'Pure Sciences & Research',
+    badge: 'IISER Science',
+    months: ['mar', 'apr', 'may', 'jun'],
+    keyDates: 'Mar–Apr Reg • Early June National Exam',
+    timeline: 'Registration March–April. Exam held in early June.',
+    schedule: [
+      { month: 'mar', phase: 'Registration', text: 'Application portal opens for 5-Year BS-MS at all 7 IISERs' },
+      { month: 'apr', phase: 'Deadline', text: 'Registration deadline and mock test portal live' },
+      { month: 'may', phase: 'Admit Card', text: 'Admit card download window' },
+      { month: 'jun', phase: 'Exam Window', text: 'Computer-based test held in early June across India' }
+    ]
   },
   nest: {
-    name: 'NEST',
+    name: 'NEST (NISER / CEBS)',
     site: 'https://www.nestexam.in',
-    body: 'NISER Bhubaneswar / UM-DAE CEBS',
-    timeline: 'Registration January–April. Exam held in early June.'
+    body: 'NISER Bhubaneswar & UM-DAE CEBS',
+    category: 'Pure Sciences & Research',
+    badge: 'Atomic Energy / NISER',
+    months: ['jan', 'feb', 'mar', 'apr', 'jun'],
+    keyDates: 'Jan–Apr Reg • Early June National Exam',
+    timeline: 'Registration January–April. Exam held in early June.',
+    schedule: [
+      { month: 'jan', phase: 'Registration', text: 'Information brochure released & portal live' },
+      { month: 'feb', phase: 'Registration', text: 'Online registration active' },
+      { month: 'apr', phase: 'Deadline', text: 'Registration window closes' },
+      { month: 'jun', phase: 'Exam Window', text: 'Computer-based test conducted in two sessions' }
+    ]
   },
   isiat: {
     name: 'ISI Admission Test',
     site: 'https://www.isical.ac.in',
     body: 'Indian Statistical Institute',
-    timeline: 'Registration February–March. Exam held in May, in offline mode.'
-  },
+    category: 'Pure Sciences & Math',
+    badge: 'Premier Math & Stats',
+    months: ['feb', 'mar', 'apr', 'may'],
+    keyDates: 'Feb–Mar Reg • May Offline Exam',
+    timeline: 'Registration February–March. Exam held in May, in offline mode.',
+    schedule: [
+      { month: 'feb', phase: 'Registration', text: 'Application portal opens for B.Stat (Hons) & B.Math (Hons)' },
+      { month: 'mar', phase: 'Deadline', text: 'Application submission deadline' },
+      { month: 'apr', phase: 'Admit Card', text: 'Hall tickets generated' },
+      { month: 'may', phase: 'Exam Window', text: 'Objective & subjective advanced mathematics examination' }
+    ]
+  }
 };
 
 const CAREERS = [

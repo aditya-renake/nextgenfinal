@@ -22,6 +22,12 @@
 </head>
 <body>
 
+  <!-- AMBIENT BACKGROUND GLOWS & GRID -->
+  <div class="bg-grid-pattern" aria-hidden="true"></div>
+  <div class="ambient-orb orb-1" aria-hidden="true"></div>
+  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+  <div class="ambient-orb orb-3" aria-hidden="true"></div>
+
   <!-- HEADER / NAVIGATION -->
   <header>
     <nav aria-label="Main Navigation">
@@ -35,24 +41,70 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#quiz">Take the quiz</a></li>
         <li><a href="#explorer">Explore careers</a></li>
+        <li><a href="#timeline">Exam Calendar</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
-      <a href="#quiz" class="nav-cta">Start</a>
+      <a href="#quiz" class="nav-cta">Start Quiz</a>
       <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
     </nav>
   </header>
 
   <main>
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION WITH FLOATING BADGES -->
     <section class="hero" id="hero">
+      <!-- Interactive Floating Badges -->
+      <div class="floating-badge fb-1" onclick="filterByCareerTag('eng')">
+        <span class="fb-icon">🚀</span>
+        <div class="fb-content">
+          <span class="fb-title">AI &amp; Tech Eng</span>
+          <span class="fb-sub">JEE • BITSAT</span>
+        </div>
+      </div>
+      <div class="floating-badge fb-2" onclick="filterByCareerTag('med')">
+        <span class="fb-icon">🩺</span>
+        <div class="fb-content">
+          <span class="fb-title">Medicine &amp; Surgery</span>
+          <span class="fb-sub">NEET-UG</span>
+        </div>
+      </div>
+      <div class="floating-badge fb-3" onclick="filterByCareerTag('law')">
+        <span class="fb-icon">⚖️</span>
+        <div class="fb-content">
+          <span class="fb-title">Corporate Law</span>
+          <span class="fb-sub">CLAT • NLUs</span>
+        </div>
+      </div>
+      <div class="floating-badge fb-4" onclick="filterByCareerTag('des')">
+        <span class="fb-icon">🎨</span>
+        <div class="fb-content">
+          <span class="fb-title">UI/UX &amp; Design</span>
+          <span class="fb-sub">UCEED • NID</span>
+        </div>
+      </div>
+      <div class="floating-badge fb-5" onclick="filterByCareerTag('com')">
+        <span class="fb-icon">📈</span>
+        <div class="fb-content">
+          <span class="fb-title">Chartered Accountant</span>
+          <span class="fb-sub">ICAI • IPMAT</span>
+        </div>
+      </div>
+      <div class="floating-badge fb-6" onclick="filterByCareerTag('sci')">
+        <span class="fb-icon">🔬</span>
+        <div class="fb-content">
+          <span class="fb-title">Research &amp; Science</span>
+          <span class="fb-sub">IISER • NEST</span>
+        </div>
+      </div>
+
       <div class="wrap hero-grid">
-        <div>
+        <div class="hero-content">
           <p class="eyebrow">For students after 12th</p>
           <h1>You don't need <em>the</em> right answer.<br>Just your next direction.</h1>
           <p>A ten‑question compass that turns what you actually enjoy into real career paths — streams, entrance exams, degrees, and the roles waiting at the end of them.</p>
           <div class="hero-actions">
             <a href="#quiz" class="btn-primary">Take the 3‑minute quiz</a>
             <a href="#explorer" class="btn-ghost">Browse all careers</a>
+            <a href="#timeline" class="btn-ghost btn-outline-cyan">📅 Exam Calendar</a>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><b>8</b><span>CAREER DIRECTIONS</span></div>
@@ -108,15 +160,16 @@
       <div class="wrap">
         <div style="text-align:center; margin-bottom:40px;" class="reveal">
           <p class="eyebrow" style="justify-content:center;">The compass quiz</p>
-          <h2 class="section-title">What actually pulls your attention?</h2>
+          <h2 class="section-title">Find where your instincts point</h2>
+          <p class="section-lede" style="margin:0 auto;">Ten quick questions. Pick the option that actually sounds like you on a regular day, not on your best day.</p>
         </div>
 
-        <div class="quiz-shell reveal">
-
+        <div class="quiz-card reveal" id="quizCard">
+          
           <!-- Quiz Intro State -->
           <div class="quiz-intro active" id="quizIntro">
             <p style="color:var(--text-muted); font-size:15.5px; margin-bottom:24px;">There's no pass or fail here — just a faster way to see the pattern in what you enjoy. Takes about 3 minutes.</p>
-            <button class="btn-primary" onclick="startQuiz()" style="width:100%; text-align:center; border:none;">Begin</button>
+            <button class="btn-primary" onclick="startQuiz()" style="width:100%; text-align:center; border:none;">Begin the quiz →</button>
           </div>
 
           <!-- Quiz Active Questions State -->
@@ -175,6 +228,44 @@
       </div>
     </section>
 
+    <!-- INTERACTIVE MONTH-BY-MONTH EXAM TIMELINE CALENDAR -->
+    <section id="timeline" class="timeline-section">
+      <div class="wrap reveal">
+        <div class="timeline-head-flex">
+          <div>
+            <p class="eyebrow">Interactive Exam Calendar</p>
+            <h2 class="section-title">Timeline by Month</h2>
+            <p class="section-lede">Click on any month to shrink and filter the timeline. Instantly see which registration forms are active, exam dates, and official test portals.</p>
+          </div>
+          <div class="timeline-search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="timelineSearchInput" placeholder="Filter exams (e.g. JEE, NEET, CLAT)..." aria-label="Filter exams">
+          </div>
+        </div>
+
+        <!-- Month Navigation Pills -->
+        <div class="month-nav-container">
+          <div class="month-nav-scroll" id="monthNav">
+            <!-- Rendered by JS: All Months, Jan, Feb, Mar, ... Dec with count badges -->
+          </div>
+        </div>
+
+        <!-- Active Month Overview Header -->
+        <div class="month-status-banner" id="monthStatusBanner">
+          <span class="ms-dot"></span>
+          <span id="monthStatusText">Showing all upcoming entrance exams &amp; timelines</span>
+        </div>
+
+        <!-- Month Exam Cards Grid -->
+        <div class="timeline-grid" id="timelineGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
     <!-- FAQ SECTION -->
     <section id="faq">
       <div class="wrap reveal" style="text-align:center;">
@@ -204,6 +295,7 @@
         <ul class="footer-links">
           <li><a href="#quiz">Quiz</a></li>
           <li><a href="#explorer">Explorer</a></li>
+          <li><a href="#timeline">Exam Calendar</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>

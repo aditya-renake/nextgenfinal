@@ -11,9 +11,18 @@ function initApp() {
   initMobileNav();
   initCompassVisuals();
   initExplorer();
+  initTimelineCalendar();
   initFAQ();
   initScrollReveal();
 }
+
+window.filterByCareerTag = function(catId) {
+  setActiveFilter(catId);
+  const explorer = document.getElementById('explorer');
+  if (explorer) {
+    explorer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
 
 /* ============ MOBILE NAVIGATION ============ */
 function initMobileNav() {
@@ -405,6 +414,209 @@ function initFAQ() {
     faqList.appendChild(el);
   });
 }
+
+/* ============ INTERACTIVE MONTH-BY-MONTH TIMELINE CALENDAR ============ */
+let activeMonth = 'all';
+let timelineSearchQuery = '';
+
+const MONTHS = [
+  { key: 'all', label: 'All Year', short: 'All' },
+  { key: 'jan', label: 'January', short: 'Jan' },
+  { key: 'feb', label: 'February', short: 'Feb' },
+  { key: 'mar', label: 'March', short: 'Mar' },
+  { key: 'apr', label: 'April', short: 'Apr' },
+  { key: 'may', label: 'May', short: 'May' },
+  { key: 'jun', label: 'June', short: 'Jun' },
+  { key: 'jul', label: 'July', short: 'Jul' },
+  { key: 'aug', label: 'August', short: 'Aug' },
+  { key: 'sep', label: 'September', short: 'Sep' },
+  { key: 'oct', label: 'October', short: 'Oct' },
+  { key: 'nov', label: 'November', short: 'Nov' },
+  { key: 'dec', label: 'December', short: 'Dec' }
+];
+
+function initTimelineCalendar() {
+  const monthNav = document.getElementById('monthNav');
+  const searchInput = document.getElementById('timelineSearchInput');
+
+  if (!monthNav) return;
+
+  renderMonthNavigation();
+  renderTimelineCards();
+
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      timelineSearchQuery = e.target.value.trim().toLowerCase();
+      renderTimelineCards();
+    });
+  }
+}
+
+function getExamMonthCount(monthKey) {
+  if (monthKey === 'all') {
+    return Object.keys(EXAM_INFO).length;
+  }
+  return Object.values(EXAM_INFO).filter(ex => ex.months && ex.months.includes(monthKey)).length;
+}
+
+function renderMonthNavigation() {
+  const monthNav = document.getElementById('monthNav');
+  if (!monthNav) return;
+
+  monthNav.innerHTML = '';
+
+  MONTHS.forEach(m => {
+    const count = getExamMonthCount(m.key);
+    const btn = document.createElement('button');
+    btn.className = `month-nav-btn ${m.key === activeMonth ? 'active' : ''}`;
+    btn.dataset.month = m.key;
+    btn.innerHTML = `
+      <span class="mn-label">${m.short}</span>
+      <span class="mn-badge">${count}</span>
+    `;
+
+    btn.onclick = () => {
+      activeMonth = m.key;
+      document.querySelectorAll('.month-nav-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.month === m.key);
+      });
+      renderTimelineCards();
+    };
+
+    monthNav.appendChild(btn);
+  });
+}
+
+function renderTimelineCards() {
+  const grid = document.getElementById('timelineGrid');
+  const statusText = document.getElementById('monthStatusText');
+  if (!grid) return;
+
+  const currentMonthObj = MONTHS.find(m => m.key === activeMonth) || MONTHS[0];
+
+  // Filter exams
+  let examEntries = Object.entries(EXAM_INFO);
+
+  if (activeMonth !== 'all') {
+    examEntries = examEntries.filter(([key, ex]) => ex.months && ex.months.includes(activeMonth));
+  }
+
+  if (timelineSearchQuery) {
+    examEntries = examEntries.filter(([key, ex]) => {
+      return (
+        ex.name.toLowerCase().includes(timelineSearchQuery) ||
+        ex.body.toLowerCase().includes(timelineSearchQuery) ||
+        (ex.category && ex.category.toLowerCase().includes(timelineSearchQuery)) ||
+        (ex.timeline && ex.timeline.toLowerCase().includes(timelineSearchQuery))
+      );
+    });
+  }
+
+  // Update status banner
+  if (statusText) {
+    if (timelineSearchQuery) {
+      statusText.innerHTML = `Found <b>${examEntries.length}</b> entrance exams matching "<b>${timelineSearchQuery}</b>"`;
+    } else if (activeMonth === 'all') {
+      statusText.innerHTML = `Showing all <b>${examEntries.length}</b> national entrance exams &amp; admissions schedules`;
+    } else {
+      statusText.innerHTML = `Showing <b>${examEntries.length}</b> entrance exam events active in <b>${currentMonthObj.label}</b>`;
+    }
+  }
+
+  if (examEntries.length === 0) {
+    grid.innerHTML = `
+      <div class="timeline-empty">
+        <div class="empty-icon">📅</div>
+        <h3>No exams found for this selection</h3>
+        <p>Try selecting another month or clearing your search filter to see more upcoming deadlines.</p>
+        <button class="btn-ghost" onclick="resetTimelineFilter()">Show All Months</button>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = '';
+
+  examEntries.forEach(([key, ex], idx) => {
+    const card = document.createElement('div');
+    card.className = 'timeline-card';
+    card.style.animationDelay = `${idx * 0.04}s`;
+
+    // Active schedule events for this specific month
+    let activeScheduleHTML = '';
+    if (activeMonth !== 'all' && ex.schedule) {
+      const monthEvents = ex.schedule.filter(s => s.month === activeMonth);
+      if (monthEvents.length > 0) {
+        activeScheduleHTML = `
+          <div class="timeline-month-highlights">
+            <span class="tmh-title">⚡ ${currentMonthObj.label} Highlights:</span>
+            ${monthEvents.map(e => `
+              <div class="tmh-pill tmh-pill-${e.phase.toLowerCase().replace(/\s+/g, '-')}">
+                <span class="tmh-phase">${e.phase}</span>
+                <span class="tmh-text">${e.text}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+    } else if (ex.schedule && ex.schedule.length > 0) {
+      // Preview up to 3 upcoming milestones in All view
+      activeScheduleHTML = `
+        <div class="timeline-month-highlights">
+          <span class="tmh-title">Key Cycle Milestones:</span>
+          <div class="tmh-preview-row">
+            ${ex.schedule.slice(0, 3).map(e => `
+              <span class="tmh-mini-tag"><b>${e.month.toUpperCase()}</b>: ${e.phase}</span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    const linkHTML = ex.site
+      ? `<a href="${ex.site}" target="_blank" rel="noopener noreferrer" class="timeline-btn-portal">Visit Portal ↗</a>`
+      : `<span class="timeline-portal-offline">Institutional Portal</span>`;
+
+    card.innerHTML = `
+      <div class="tl-card-top">
+        <div class="tl-tags">
+          <span class="tl-cat-tag">${ex.category || 'Entrance Test'}</span>
+          <span class="tl-badge">${ex.badge || 'National'}</span>
+        </div>
+      </div>
+      <h3 class="tl-exam-title">${ex.name}</h3>
+      <p class="tl-exam-body">${ex.body}</p>
+      
+      ${activeScheduleHTML}
+
+      <div class="tl-full-timeline">
+        <span class="tl-ft-label">Full Timeline Overview:</span>
+        <p>${ex.timeline}</p>
+      </div>
+
+      <div class="tl-card-footer">
+        <div class="tl-keydates">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span>${ex.keyDates || 'Check site for annual updates'}</span>
+        </div>
+        <div class="tl-actions">
+          ${linkHTML}
+        </div>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+window.resetTimelineFilter = function () {
+  activeMonth = 'all';
+  timelineSearchQuery = '';
+  const searchInput = document.getElementById('timelineSearchInput');
+  if (searchInput) searchInput.value = '';
+  renderMonthNavigation();
+  renderTimelineCards();
+};
 
 /* ============ SCROLL REVEAL ============ */
 function initScrollReveal() {
