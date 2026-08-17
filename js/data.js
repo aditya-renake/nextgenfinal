@@ -437,6 +437,151 @@ const EXAM_INFO = {
       { month: 'apr', phase: 'Admit Card', text: 'Hall tickets generated' },
       { month: 'may', phase: 'Exam Window', text: 'Objective & subjective advanced mathematics examination' }
     ]
+  },
+  nda: {
+    name: 'NDA & NA Exam (National Defence Academy)',
+    site: 'https://upsc.gov.in',
+    body: 'Union Public Service Commission (UPSC)',
+    category: 'Government, Defence & Public Services',
+    badge: 'Armed Forces 10+2',
+    months: ['dec', 'jan', 'apr', 'may', 'jun', 'sep'],
+    keyDates: 'NDA-I: Dec Reg, Apr Exam • NDA-II: May Reg, Sep Exam',
+    timeline: 'Conducted twice a year by UPSC for 12th pass/appearing students for Army, Navy & Air Force cadet entry.',
+    schedule: [
+      { month: 'dec', phase: 'Registration', text: 'NDA-I notification & online registration opens' },
+      { month: 'jan', phase: 'Deadline', text: 'NDA-I application window closes' },
+      { month: 'apr', phase: 'Exam Window', text: 'NDA-I Mathematics & General Ability offline test' },
+      { month: 'may', phase: 'Registration', text: 'NDA-II notification & online application opens' },
+      { month: 'jun', phase: 'Deadline', text: 'NDA-II registration window closes' },
+      { month: 'sep', phase: 'Exam Window', text: 'NDA-II national examination held across India' }
+    ]
+  },
+  cds: {
+    name: 'CDS (Combined Defence Services)',
+    site: 'https://upsc.gov.in',
+    body: 'Union Public Service Commission (UPSC)',
+    category: 'Government, Defence & Public Services',
+    badge: 'Defence Post-Grad',
+    months: ['dec', 'jan', 'apr', 'may', 'jun', 'sep'],
+    keyDates: 'CDS-I: Dec Reg, Apr Exam • CDS-II: May Reg, Sep Exam',
+    timeline: 'Twice a year exam for graduates seeking officer entry into Indian Army (IMA/OTA), Navy (INA), and Air Force (AFA).',
+    schedule: [
+      { month: 'dec', phase: 'Registration', text: 'CDS-I notification released on upsc.gov.in' },
+      { month: 'apr', phase: 'Exam Window', text: 'CDS-I written examination across centres' },
+      { month: 'may', phase: 'Registration', text: 'CDS-II online registration opens' },
+      { month: 'sep', phase: 'Exam Window', text: 'CDS-II written examination' }
+    ]
+  },
+  afcat: {
+    name: 'AFCAT (Air Force Common Admission Test)',
+    site: 'https://afcat.cdac.in',
+    body: 'Indian Air Force (IAF)',
+    category: 'Government, Defence & Public Services',
+    badge: 'Air Force Officer',
+    months: ['dec', 'jan', 'feb', 'jun', 'jul', 'aug'],
+    keyDates: 'AFCAT 1: Dec Reg, Feb Exam • AFCAT 2: Jun Reg, Aug Exam',
+    timeline: 'Conducted twice annually for Flying, Technical and Ground Duty branches in the Indian Air Force.',
+    schedule: [
+      { month: 'dec', phase: 'Registration', text: 'AFCAT 1 application window opens' },
+      { month: 'feb', phase: 'Exam Window', text: 'AFCAT 1 Computer-Based Test' },
+      { month: 'jun', phase: 'Registration', text: 'AFCAT 2 online application portal live' },
+      { month: 'aug', phase: 'Exam Window', text: 'AFCAT 2 national examination' }
+    ]
+  },
+  sscchsl: {
+    name: 'SSC CHSL (10+2 Level Central Posts)',
+    site: 'https://ssc.gov.in',
+    body: 'Staff Selection Commission (SSC)',
+    category: 'Government, Defence & Public Services',
+    badge: '12th Pass Govt Entry',
+    months: ['apr', 'may', 'jun', 'jul'],
+    keyDates: 'Apr–May Reg • Jun–Jul Tier 1 Exam',
+    timeline: 'National exam right after 12th for Lower Division Clerks (LDC), Junior Secretarial Assistants (JSA), and Data Entry Operators (DEO) in Central Ministries.',
+    schedule: [
+      { month: 'apr', phase: 'Registration', text: 'Official SSC CHSL notification released and online form opens' },
+      { month: 'may', phase: 'Deadline', text: 'Online application and fee payment closure' },
+      { month: 'jun', phase: 'Exam Window', text: 'Tier-1 Computer-Based Examination' },
+      { month: 'jul', phase: 'Exam Window', text: 'Tier-1 exam concluding slots & answer keys release' }
+    ]
+  },
+  ssccgl: {
+    name: 'SSC CGL (Combined Graduate Level)',
+    site: 'https://ssc.gov.in',
+    body: 'Staff Selection Commission (SSC)',
+    category: 'Government, Defence & Public Services',
+    badge: 'Group B & C Officers',
+    months: ['jun', 'jul', 'sep', 'oct'],
+    keyDates: 'Jun–Jul Reg • Sep–Oct Tier 1 Exam',
+    timeline: 'Recruitment for premier central government officer posts including Income Tax Inspector, Central Excise Inspector, Assistant Section Officer (ASO) in CSS, and CBI Sub-Inspector.',
+    schedule: [
+      { month: 'jun', phase: 'Registration', text: 'SSC CGL official notification and registration live' },
+      { month: 'jul', phase: 'Deadline', text: 'Registration closing date' },
+      { month: 'sep', phase: 'Exam Window', text: 'Tier-1 national examination window' },
+      { month: 'oct', phase: 'Results', text: 'Tier-1 results and Tier-2 descriptive/CBT scheduling' }
+    ]
+  },
+  ibpspo: {
+    name: 'IBPS Bank PO & MT',
+    site: 'https://www.ibps.in',
+    body: 'Institute of Banking Personnel Selection',
+    category: 'Government, Defence & Public Services',
+    badge: 'Nationalized Banks',
+    months: ['aug', 'sep', 'oct', 'nov'],
+    keyDates: 'Aug Reg • Oct Prelims • Nov Mains',
+    timeline: 'National entrance for Probationary Officer & Management Trainee roles across 11 public sector banks including PNB, Bank of Baroda, Canara Bank.',
+    schedule: [
+      { month: 'aug', phase: 'Registration', text: 'IBPS PO notification & online registration' },
+      { month: 'sep', phase: 'Admit Card', text: 'Call letter download for preliminary test' },
+      { month: 'oct', phase: 'Exam Window', text: 'Online Preliminary Examination' },
+      { month: 'nov', phase: 'Mains Exam', text: 'Online Main Examination & descriptive test' }
+    ]
+  },
+  sbipo: {
+    name: 'SBI Probationary Officer (SBI PO)',
+    site: 'https://sbi.co.in/careers',
+    body: 'State Bank of India',
+    category: 'Government, Defence & Public Services',
+    badge: 'Premier Banking Officer',
+    months: ['sep', 'oct', 'nov', 'dec', 'jan'],
+    keyDates: 'Sep–Oct Reg • Nov Prelims • Dec/Jan Mains',
+    timeline: 'The most prestigious public banking examination in India for officer entry into the State Bank of India.',
+    schedule: [
+      { month: 'sep', phase: 'Registration', text: 'SBI PO online recruitment portal live' },
+      { month: 'oct', phase: 'Deadline', text: 'Registration deadline' },
+      { month: 'nov', phase: 'Exam Window', text: 'SBI PO Preliminary Examination' },
+      { month: 'dec', phase: 'Mains Exam', text: 'SBI PO Mains Examination & Psychometric Test' }
+    ]
+  },
+  rbigradeb: {
+    name: 'RBI Grade B Officer',
+    site: 'https://rbi.org.in',
+    body: 'Reserve Bank of India Services Board',
+    category: 'Government, Defence & Public Services',
+    badge: 'Central Banking Apex',
+    months: ['may', 'jun', 'jul', 'aug', 'sep'],
+    keyDates: 'May–Jun Reg • Jul Phase 1 • Aug Phase 2',
+    timeline: 'Direct officer entry into India’s central bank, shaping monetary policy, financial supervision, and banking regulation.',
+    schedule: [
+      { month: 'may', phase: 'Notification', text: 'RBI Grade B notification released' },
+      { month: 'jun', phase: 'Registration', text: 'Online application submission window' },
+      { month: 'jul', phase: 'Exam Window', text: 'Phase 1 Computer-Based Test' },
+      { month: 'aug', phase: 'Mains Exam', text: 'Phase 2 Economic, Financial & English descriptive test' }
+    ]
+  },
+  capfac: {
+    name: 'CAPF (Assistant Commandant - UPSC)',
+    site: 'https://upsc.gov.in',
+    body: 'Union Public Service Commission (UPSC)',
+    category: 'Government, Defence & Public Services',
+    badge: 'Paramilitary Officers',
+    months: ['apr', 'may', 'aug'],
+    keyDates: 'Apr–May Reg • August Written Exam',
+    timeline: 'Direct entry as Assistant Commandant (Gazetted Officer) in BSF, CRPF, CISF, ITBP, and SSB.',
+    schedule: [
+      { month: 'apr', phase: 'Registration', text: 'UPSC CAPF (AC) notification and application opens' },
+      { month: 'may', phase: 'Deadline', text: 'Application window closes' },
+      { month: 'aug', phase: 'Exam Window', text: 'Paper 1 (General Ability) & Paper 2 (General Studies & Essay)' }
+    ]
   }
 };
 
@@ -683,6 +828,475 @@ const CAREERS = [
   },
 ];
 
+const COURSE_BRANCHES = [
+  {
+    id: 'eng',
+    name: 'Engineering & Technology',
+    icon: '⚡',
+    badge: 'PCM Track',
+    degrees: 'B.Tech / B.E. / BS-MS (4 Years)',
+    desc: 'Core architecture of computing software, artificial intelligence, semiconductor chips, electric vehicles, and aerospace propulsion.',
+    streamReq: 'Class 12 Science with Physics, Chemistry & Mathematics (PCM)',
+    branches: [
+      {
+        name: 'Computer Science & Engineering (CSE)',
+        specialisations: 'Artificial Intelligence, Machine Learning, Cloud Architecture, Cyber Security, Full-Stack Systems',
+        scope: 'Software Architect, Machine Learning Engineer, Cloud Solutions Specialist, High-Frequency Trading Developer',
+        duration: '4 Years',
+        topColleges: 'IITs, NITs, IIITs, BITS Pilani, Top State Universities',
+        salaryRange: '₹8 - 45+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'BITSAT', 'State CET']
+      },
+      {
+        name: 'Artificial Intelligence & Data Science (AI/DS)',
+        specialisations: 'Deep Learning, Neural Networks, Natural Language Processing (NLP), Big Data Analytics, MLOps',
+        scope: 'AI Research Scientist, Data Engineer, Quantitative Analyst, Algorithm Specialist',
+        duration: '4 Years',
+        topColleges: 'IIT Hyderabad, IIT Bombay, IIIT Hyderabad, BITS Pilani',
+        salaryRange: '₹10 - 50+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'BITSAT']
+      },
+      {
+        name: 'Electronics & Communication (ECE / VLSI)',
+        specialisations: 'VLSI Chip Design, Embedded Systems, IoT, 5G/6G Telecom, Robotics & Sensor Interfacing',
+        scope: 'Semiconductor Design Engineer (NVIDIA/Intel), Embedded Firmware Developer, Telecom Architect',
+        duration: '4 Years',
+        topColleges: 'IITs, NIT Trichy, NIT Surathkal, BITS Pilani',
+        salaryRange: '₹7 - 35+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'BITSAT', 'State CET']
+      },
+      {
+        name: 'Aerospace & Aeronautical Engineering',
+        specialisations: 'Avionics, Aerodynamics, Rocket Propulsion, Spacecraft Dynamics, Autonomous Drone Tech',
+        scope: 'Flight Dynamics Engineer, Propulsion Scientist (ISRO / DRDO), Aerospace Simulation Consultant',
+        duration: '4 Years',
+        topColleges: 'IIT Madras, IIT Kanpur, IIT Bombay, IIST Thiruvananthapuram',
+        salaryRange: '₹8 - 30+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'IIST Admission']
+      },
+      {
+        name: 'Mechanical & Robotics Engineering',
+        specialisations: 'Robotics & Automation, Electric Vehicle (EV) Powertrains, CAD/CAM, Mechatronics, Thermal Systems',
+        scope: 'Industrial Automation Engineer, EV Designer (Tesla/Ola/Tata Motors), Mechatronics Specialist',
+        duration: '4 Years',
+        topColleges: 'IITs, NITs, BITS Pilani, DTU Delhi, COEP Pune',
+        salaryRange: '₹6 - 22+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'BITSAT', 'State CET']
+      },
+      {
+        name: 'Biotechnology & Biomedical Engineering',
+        specialisations: 'Genomics & Bioinformatics, Medical Imaging Systems, Neural Prosthetics, Bioprocess Engineering',
+        scope: 'Bioinformatics Scientist, Medical Device Engineer, Pharma R&D Specialist',
+        duration: '4 Years',
+        topColleges: 'IIT Roorkee, IIT Delhi, Manipal, Vellore Institute of Technology',
+        salaryRange: '₹6 - 20+ LPA',
+        exams: ['JEE Main', 'State CET', 'Target Univ Entrance']
+      },
+      {
+        name: 'Civil & Smart Infrastructure Engineering',
+        specialisations: 'Structural Dynamics, Smart City Transportation, Geotechnical Engineering, Environmental Systems',
+        scope: 'Mega-Infrastructure Consultant, Structural Engineer, Urban Transportation Planner',
+        duration: '4 Years',
+        topColleges: 'IITs, NITs, CEG Chennai, Jadavpur University',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'State CET']
+      },
+      {
+        name: 'Chemical & Materials Science Engineering',
+        specialisations: 'Nanomaterials, Polymer Sciences, Petrochemical & Renewable Energy, Process Design Automation',
+        scope: 'Advanced Materials Scientist, Energy Storage Specialist, Petrochemical Process Engineer',
+        duration: '4 Years',
+        topColleges: 'ICT Mumbai, IIT Bombay, IIT Madras, NIT Trichy',
+        salaryRange: '₹6 - 24+ LPA',
+        exams: ['JEE Main', 'JEE Advanced', 'MHT-CET']
+      }
+    ]
+  },
+  {
+    id: 'med',
+    name: 'Medicine, Healthcare & Clinical Sciences',
+    icon: '🩺',
+    badge: 'PCB Track',
+    degrees: 'MBBS / BDS / B.Pharm / BPT / BAMS (4 to 5.5 Years)',
+    desc: 'Clinical practice, diagnostics, surgical specialization, pharmacotherapy, and physiotherapy rehabilitation.',
+    streamReq: 'Class 12 Science with Physics, Chemistry & Biology (PCB)',
+    branches: [
+      {
+        name: 'MBBS (Bachelor of Medicine & Bachelor of Surgery)',
+        specialisations: 'General Medicine, Cardiology, Neurology, General Surgery, Paediatrics, Radiology',
+        scope: 'Physician, Surgeon, Medical Officer, Hospital Clinical Specialist',
+        duration: '5.5 Years (incl. 1-Year Compulsory Paid Internship)',
+        topColleges: 'AIIMS New Delhi, CMC Vellore, JIPMER, KGMU, Grant Medical College',
+        salaryRange: '₹9 - 30+ LPA (Substantially rises after MD/MS)',
+        exams: ['NEET-UG']
+      },
+      {
+        name: 'BDS (Bachelor of Dental Surgery)',
+        specialisations: 'Orthodontics, Oral & Maxillofacial Surgery, Prosthodontics, Periodontics, Aesthetic Dentistry',
+        scope: 'Dental Surgeon, Cosmetic Dentist, Maxillofacial Consultant',
+        duration: '5 Years (incl. Internship)',
+        topColleges: 'Maulana Azad Dental Institute, Manipal Dental College, King George Dental',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['NEET-UG']
+      },
+      {
+        name: 'B.Pharm & Pharm.D (Pharmacy & Clinical Pharmacology)',
+        specialisations: 'Clinical Research, Drug Formulation & Discovery, Regulatory Affairs, Pharmacovigilance',
+        scope: 'Clinical Pharmacist, Drug Safety Associate, Formulations R&D Scientist',
+        duration: '4 Years (B.Pharm) / 6 Years (Pharm.D)',
+        topColleges: 'NIPER, Jamia Hamdard, BITS Pilani, Manipal College of Pharmaceutical Sciences',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['State CET', 'BITSAT', 'NEET-UG / University Entrance']
+      },
+      {
+        name: 'BPT (Physiotherapy & Sports Rehabilitation)',
+        specialisations: 'Sports Injury Rehab, Orthopaedic PT, Neuro-Physiotherapy, Cardiopulmonary Rehab',
+        scope: 'Sports Team Physiotherapist, Clinical Physiotherapy Consultant, Rehabilitation Specialist',
+        duration: '4.5 Years (incl. 6-Month Internship)',
+        topColleges: 'KEM Hospital Mumbai, CMC Vellore, Manipal College of Health Professions',
+        salaryRange: '₹4.5 - 15+ LPA',
+        exams: ['NEET-UG / State Paramedical Entrance']
+      },
+      {
+        name: 'BAMS / BHMS (Ayurvedic & Alternative Medicine)',
+        specialisations: 'Kayachikitsa, Panchakarma, Shalya Tantra, Integrative Wellness Medicine',
+        scope: 'Ayurvedic Medical Practitioner, Wellness Director, Alternative Medicine Researcher',
+        duration: '5.5 Years',
+        topColleges: 'National Institute of Ayurveda Jaipur, ITRA Jamnagar, BHU Varanasi',
+        salaryRange: '₹5 - 16+ LPA',
+        exams: ['NEET-UG']
+      },
+      {
+        name: 'B.Sc Nursing & Critical Care Sciences',
+        specialisations: 'Emergency Medicine, ICU Care, Paediatric Nursing, Global Public Health',
+        scope: 'Nursing Officer, Clinical Care Specialist, Global Healthcare Practitioner (UK/USA/Gulf)',
+        duration: '4 Years',
+        topColleges: 'AIIMS, CMC Vellore, Armed Forces Medical College (AFMC B.Sc)',
+        salaryRange: '₹4.5 - 14+ LPA (High International Mobility)',
+        exams: ['NEET-UG / AIIMS Nursing Entrance / Military Nursing']
+      },
+      {
+        name: 'Allied Diagnostic & Imaging Sciences',
+        specialisations: 'Medical Radiology (MRI/CT), Medical Lab Technology (MLT), Optometry, Anaesthesia Tech',
+        scope: 'Diagnostic Technologist, Radiology Imaging Specialist, Clinical Lab Supervisor',
+        duration: '3 to 4 Years',
+        topColleges: 'AIIMS, PGIMER Chandigarh, Manipal, Jamia Hamdard',
+        salaryRange: '₹4 - 12+ LPA',
+        exams: ['State Paramedical Tests / 12th Merit']
+      }
+    ]
+  },
+  {
+    id: 'com',
+    name: 'Commerce, Finance & Management',
+    icon: '📈',
+    badge: 'Commerce / Any Stream',
+    degrees: 'CA / BBA / BMS / B.Com (Hons) / IPM / Actuarial (3 to 5 Years)',
+    desc: 'Corporate accounting, investment banking, portfolio management, business analytics, and executive leadership.',
+    streamReq: 'Commerce or Science/Humanities with Mathematics/Economics preferred',
+    branches: [
+      {
+        name: 'Chartered Accountancy (CA - ICAI)',
+        specialisations: 'Statutory Auditing, Direct & International Taxation, Forensic Accounting, Corporate Finance',
+        scope: 'Partner at Audit Firm, Chief Financial Officer (CFO), Financial Controller',
+        duration: '4.5 - 5 Years (Foundation + Inter + 2 Years Articleship + Final)',
+        topColleges: 'Institute of Chartered Accountants of India (ICAI)',
+        salaryRange: '₹9 - 30+ LPA',
+        exams: ['CA Foundation (Jan / May / Sep)']
+      },
+      {
+        name: 'Management & Business Administration (BBA / BMS / IPM)',
+        specialisations: 'Strategic Marketing, Human Resources, Supply Chain & Logistics, General Management',
+        scope: 'Brand Manager, Management Consultant, Operations Executive, Business Development Lead',
+        duration: '3 Years (BBA) / 5 Years (IPM Integrated)',
+        topColleges: 'IIM Indore (IPM), IIM Rohtak, NMIMS Mumbai, Shaheed Sukhdev College (DU), Symbiosis',
+        salaryRange: '₹7 - 26+ LPA',
+        exams: ['IPMAT', 'CUET UG', 'NPAT', 'SET']
+      },
+      {
+        name: 'Investment Banking & CFA Track',
+        specialisations: 'Equity Research, Mergers & Acquisitions (M&A), Private Equity, Valuation Modeling',
+        scope: 'Investment Banking Analyst, Portfolio Manager, Equity Research Associate',
+        duration: '3 Years (Undergraduate Degree) + CFA Program',
+        topColleges: 'SRCC (Delhi University), St. Xavier’s College, Christ University',
+        salaryRange: '₹10 - 35+ LPA',
+        exams: ['CUET UG', 'CFA Level 1 Entry']
+      },
+      {
+        name: 'Company Secretary (CS) & CMA (Cost & Management)',
+        specialisations: 'Corporate Governance, Securities Law, Secretarial Audit, Cost Optimization',
+        scope: 'Company Secretary, Chief Compliance Officer, Cost & Management Auditor',
+        duration: '3 - 4 Years',
+        topColleges: 'ICSI (Company Secretaries of India) / ICMAI',
+        salaryRange: '₹6 - 20+ LPA',
+        exams: ['CSEET (CS Executive Entrance)']
+      },
+      {
+        name: 'Actuarial Science & Quantitative Risk',
+        specialisations: 'Life & General Insurance Math, Financial Risk Analytics, Pension Modeling',
+        scope: 'Actuary, Risk Analyst, Financial Quantitative Strategist',
+        duration: '3 - 5 Years (Clearing IAI / IFoA Papers alongside Degree)',
+        topColleges: 'Institute of Actuaries of India (IAI), ISI Kolkata, Delhi University',
+        salaryRange: '₹10 - 40+ LPA',
+        exams: ['ACET (Actuarial Common Entrance Test)']
+      },
+      {
+        name: 'Economics & Financial Analytics (B.Sc / B.A. Hons)',
+        specialisations: 'Econometrics, Policy Analysis, Macroeconomic Forecasting, Financial Market Modeling',
+        scope: 'Economic Analyst, Central Bank Policy Consultant, Macroeconomic Researcher',
+        duration: '3 to 4 Years',
+        topColleges: 'St. Stephen’s College, SRCC, Ashoka University, Loyola Chennai',
+        salaryRange: '₹7 - 24+ LPA',
+        exams: ['CUET UG']
+      }
+    ]
+  },
+  {
+    id: 'des',
+    name: 'Design, Architecture & Creative Arts',
+    icon: '🎨',
+    badge: 'Aptitude / Any Stream',
+    degrees: 'B.Des / B.Arch / B.F.A. (4 to 5 Years)',
+    desc: 'Digital product interfaces, user research, industrial prototyping, fashion, and spatial architecture.',
+    streamReq: 'Any Stream for Design (PCM mandatory for B.Arch Architecture)',
+    branches: [
+      {
+        name: 'UI/UX & Interaction Design',
+        specialisations: 'Product Design Systems, User Experience Research, Interactive Prototyping, Mobile/Web UX',
+        scope: 'Lead UX Designer, Product Designer, Interaction Architect',
+        duration: '4 Years (B.Des)',
+        topColleges: 'IIT Bombay (IDC), NID Ahmedabad, IIT Guwahati, Srishti Institute, MIT-ID',
+        salaryRange: '₹8 - 32+ LPA',
+        exams: ['UCEED', 'NID DAT']
+      },
+      {
+        name: 'Product & Industrial Design',
+        specialisations: 'Consumer Hardware Design, Ergonomics, Automotive Styling, Sustainable Packaging',
+        scope: 'Industrial Designer, Consumer Electronics Product Stylist, CAD Design Engineer',
+        duration: '4 Years',
+        topColleges: 'NID Ahmedabad, IIT Bombay, IIT Delhi, MIT Institute of Design',
+        salaryRange: '₹7 - 25+ LPA',
+        exams: ['UCEED', 'NID DAT']
+      },
+      {
+        name: 'B.Arch (Architecture & Urban Planning)',
+        specialisations: 'Sustainable Architecture, Landscape Architecture, Urban Spatial Planning, Interior Design',
+        scope: 'Licensed Architect, Urban Planner, Sustainable Design Consultant',
+        duration: '5 Years',
+        topColleges: 'IIT Roorkee, IIT Kharagpur, CEPT University Ahmedabad, SPA New Delhi',
+        salaryRange: '₹5 - 20+ LPA',
+        exams: ['NATA', 'JEE Main Paper 2']
+      },
+      {
+        name: 'Fashion Design & Luxury Technology',
+        specialisations: 'Apparel Design, Textile Technology, Sustainable Fashion, Luxury Brand Management',
+        scope: 'Fashion Designer, Apparel Creative Director, Textile Technologist',
+        duration: '4 Years',
+        topColleges: 'NIFT New Delhi, NIFT Mumbai, Pearl Academy',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['NIFT Entrance (CAT & GAT)']
+      },
+      {
+        name: 'Animation, Visual Effects (VFX) & Game Art',
+        specialisations: '3D Character Animation, Unreal/Unity Game Art, Motion Capture, CGI Compositing',
+        scope: '3D Animator, VFX Artist, Game Environment Designer, Technical Artist',
+        duration: '3 to 4 Years',
+        topColleges: 'NID, Whistling Woods International, Rubika India',
+        salaryRange: '₹5 - 22+ LPA',
+        exams: ['NID DAT / College Portfolio Tests']
+      }
+    ]
+  },
+  {
+    id: 'law',
+    name: 'Law, Legal Studies & Public Policy',
+    icon: '⚖️',
+    badge: 'Any Stream',
+    degrees: 'B.A. LL.B. / B.B.A. LL.B. (5-Year Integrated)',
+    desc: 'Corporate governance, cross-border mergers, dispute litigation, intellectual property, and civil rights.',
+    streamReq: 'Any Stream in Class 12 (Arts, Commerce, or Science)',
+    branches: [
+      {
+        name: 'Corporate & Commercial Law',
+        specialisations: 'Mergers & Acquisitions (M&A), Banking & Securities Law, Competition Law, Contract Negotiation',
+        scope: 'Corporate Associate at Tier-1 Law Firm, In-House Legal Counsel',
+        duration: '5 Years',
+        topColleges: 'NLSIU Bengaluru, NALSAR Hyderabad, WBNUJS Kolkata, NLU Delhi',
+        salaryRange: '₹14 - 22+ LPA (Tier-1 Firms)',
+        exams: ['CLAT', 'AILET']
+      },
+      {
+        name: 'Cyber Law, AI Governance & Intellectual Property (IPR)',
+        specialisations: 'Patent Prosecution, Data Privacy & GDPR, AI Ethics & Legal Compliance, Trademark Law',
+        scope: 'Tech Legal Counsel, Patent Attorney, Data Protection Officer',
+        duration: '5 Years',
+        topColleges: 'NLUs, IIT Kharagpur (RGSOIPL), Jindal Global Law School',
+        salaryRange: '₹10 - 25+ LPA',
+        exams: ['CLAT', 'AILET', 'LSAT India']
+      },
+      {
+        name: 'Litigation, Criminal Justice & Judiciary',
+        specialisations: 'Constitutional Law, Criminal Trial Practice, Appellate Litigation, Human Rights',
+        scope: 'High Court / Supreme Court Litigator, Public Prosecutor, Judicial Magistrate (via PCS-J)',
+        duration: '5 Years',
+        topColleges: 'Faculty of Law (DU), ILS Law College Pune, National Law Universities',
+        salaryRange: 'Independent / State Judicial Pay Scale',
+        exams: ['CLAT', 'CUET UG', 'State Judiciary Exams (post LLB)']
+      },
+      {
+        name: 'International Law & Commercial Arbitration',
+        specialisations: 'International Trade Law, Maritime Disputes, Cross-Border Commercial Arbitration',
+        scope: 'Arbitration Counsel, International Trade Advisor, Diplomatic Legal Attaché',
+        duration: '5 Years',
+        topColleges: 'NLSIU Bengaluru, NLU Delhi, Symbiosis Law School',
+        salaryRange: '₹12 - 30+ LPA',
+        exams: ['CLAT', 'AILET']
+      }
+    ]
+  },
+  {
+    id: 'sci',
+    name: 'Pure Sciences, Mathematics & Deep Research',
+    icon: '🔬',
+    badge: 'Science Track',
+    degrees: 'BS-MS / B.Sc (Hons) / B.Stat / B.Math (3 to 5 Years)',
+    desc: 'Fundamental physics, mathematical computation, planetary sciences, genomics, and atomic energy.',
+    streamReq: 'Class 12 Science (PCM or PCB)',
+    branches: [
+      {
+        name: 'Theoretical & Applied Physics',
+        specialisations: 'Quantum Computing, Condensed Matter Physics, Astrophysics & Cosmology, Photonics',
+        scope: 'Research Scientist, Quantum Computing Engineer, Lab Director (ISRO / CERN)',
+        duration: '5 Years (BS-MS Integrated)',
+        topColleges: 'IISc Bengaluru, IISERs (Pune, Kolkata, Mohali, Bhopal), NISER Bhubaneswar',
+        salaryRange: '₹8 - 25+ LPA (Global Fellowship & R&D Labs)',
+        exams: ['IISER Aptitude Test (IAT)', 'NEST', 'JEE Advanced']
+      },
+      {
+        name: 'Mathematical Sciences & Statistical Computing',
+        specialisations: 'Algorithmic Graph Theory, Stochastic Processes, Cryptography, Mathematical Modeling',
+        scope: 'Quantitative Researcher, Cryptographer, Data Modeling Scientist, Algorithmic Trader',
+        duration: '3 to 4 Years (B.Stat / B.Math)',
+        topColleges: 'ISI Kolkata, CMI Chennai, IISc Bengaluru, Delhi University',
+        salaryRange: '₹14 - 40+ LPA',
+        exams: ['ISI Admission Test', 'CMI Entrance', 'IAT']
+      },
+      {
+        name: 'Genomics, Molecular Biology & Biochemistry',
+        specialisations: 'CRISPR Gene Editing, Synthetic Biology, Immunology, Structural Proteomics',
+        scope: 'Genomics Researcher, Biotech R&D Lead, Molecular Diagnostics Specialist',
+        duration: '5 Years',
+        topColleges: 'IISc Bengaluru, IISERs, JNU, University of Hyderabad',
+        salaryRange: '₹7 - 22+ LPA',
+        exams: ['IAT', 'NEST', 'CUET UG']
+      },
+      {
+        name: 'Chemical & Energy Materials Research',
+        specialisations: 'Next-Gen Battery Chemistry, Green Catalysis, Nano-Biomaterials, Polymer Synthesis',
+        scope: 'Energy Storage Scientist, Formulation Specialist, Advanced Materials Researcher',
+        duration: '4 to 5 Years',
+        topColleges: 'IISc Bengaluru, IISERs, IITs, ICT Mumbai',
+        salaryRange: '₹7 - 20+ LPA',
+        exams: ['IAT', 'NEST', 'JEE Advanced']
+      }
+    ]
+  },
+  {
+    id: 'media',
+    name: 'Media, Journalism & Communications',
+    icon: '🎙️',
+    badge: 'Any Stream',
+    degrees: 'B.A. Journalism / B.M.M. / B.Sc Digital Media (3 Years)',
+    desc: 'Digital news reporting, documentary filmmaking, brand PR, podcasting, and social media ecosystem.',
+    streamReq: 'Any Stream in Class 12 with strong communication and language aptitude',
+    branches: [
+      {
+        name: 'Digital & Investigative Journalism',
+        specialisations: 'Data Journalism, Broadcast Production, Long-form Investigative Writing, Geopolitical Media',
+        scope: 'Senior News Correspondent, Investigative Journalist, Digital Editor',
+        duration: '3 Years',
+        topColleges: 'IIMC New Delhi, Asian College of Journalism (ACJ), Delhi University, Symbiosis',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['CUET UG', 'IIMC Entrance', 'SET']
+      },
+      {
+        name: 'Film Direction, Cinematography & Production',
+        specialisations: 'Screenwriting, Cinematography, Sound Design, Video Post-Production & Color Grading',
+        scope: 'Film Director, Director of Photography (DoP), Production Head, Creative Producer',
+        duration: '3 Years',
+        topColleges: 'FTII Pune, SRFTI Kolkata, Whistling Woods International',
+        salaryRange: '₹6 - 25+ LPA',
+        exams: ['JET (FTII / SRFTI Entrance)', 'Portfolio Review']
+      },
+      {
+        name: 'Public Relations, Brand Strategy & Advertising',
+        specialisations: 'Corporate Communications, Crisis Management, Influencer Strategy, Media Buying',
+        scope: 'PR Account Director, Brand Strategy Lead, Advertising Copywriter',
+        duration: '3 Years',
+        topColleges: 'St. Xavier’s College Mumbai, Delhi University, Christ University',
+        salaryRange: '₹5 - 18+ LPA',
+        exams: ['CUET UG', 'University Entrance']
+      }
+    ]
+  },
+  {
+    id: 'gov',
+    name: 'Government, Defence & Civil Services',
+    icon: '🏛️',
+    badge: 'Direct 12th & Graduation',
+    degrees: 'NDA / UPSC CSE / CDS / SSC / Banking (Direct After 12th & Graduation)',
+    desc: 'Officer cadet training in the Armed Forces, civil administration, diplomatic service, and banking authority.',
+    streamReq: 'Class 12 Pass (PCM required for Air Force & Naval Academy in NDA; Any Stream for Army)',
+    branches: [
+      {
+        name: 'National Defence Academy (NDA - Army, Navy, Air Force)',
+        specialisations: 'Military Strategy, Aeronautical Navigation, Naval Warfare, Combat Leadership',
+        scope: 'Commissioned Officer (Lieutenant / Sub Lieutenant / Flying Officer in Indian Armed Forces)',
+        duration: '3 Years NDA Khadakwasla + 1 Year IMA/INA/AFA',
+        topColleges: 'National Defence Academy (NDA Khadakwasla, Pune)',
+        salaryRange: '₹10 - 22+ LPA (Level 10 Pay Matrix + Military Allowances & Free Healthcare/Housing)',
+        exams: ['NDA & NA Exam (UPSC) + 5-Day SSB Interview']
+      },
+      {
+        name: 'Indian Navy & Army 10+2 B.Tech Cadet Entry Scheme',
+        specialisations: 'Executive, Marine Engineering, Electrical & Naval Architecture Branches',
+        scope: 'Sub Lieutenant (Commissioned Officer with Free B.Tech at INA Ezhimala)',
+        duration: '4 Years',
+        topColleges: 'Indian Naval Academy (INA) Ezhimala',
+        salaryRange: '₹10 - 22+ LPA + Full Sponsorship',
+        exams: ['JEE Main Rank + Direct Services Selection Board (SSB) Interview']
+      },
+      {
+        name: 'Civil Services (IAS, IPS, IFS, IRS via UPSC CSE)',
+        specialisations: 'District Public Administration, Police Leadership, Diplomatic Missions, Revenue Policy',
+        scope: 'District Magistrate (IAS), Superintendent of Police (IPS), Ambassador (IFS)',
+        duration: 'Graduation Degree + UPSC Examination Cycle',
+        topColleges: 'LBSNAA Mussoorie, SVPNPA Hyderabad',
+        salaryRange: 'Government Apex Pay Scale + Central Amenities',
+        exams: ['UPSC Civil Services Exam (Prelims, Mains, Interview)']
+      },
+      {
+        name: 'Combined Defence Services (CDS) & AFCAT (Air Force)',
+        specialisations: 'Short Service / Permanent Commission for Military Officers post-graduation',
+        scope: 'Captain, Major, Squadron Leader in Armed Forces',
+        duration: '1 to 1.5 Years Military Academy Training',
+        topColleges: 'IMA Dehradun, OTA Chennai, Air Force Academy (AFA)',
+        salaryRange: 'Defence Officer Pay Scale + Allowances',
+        exams: ['CDS (UPSC)', 'AFCAT (IAF) + SSB Interview']
+      },
+      {
+        name: 'Central Ministries & Banking Officers (SSC CGL / CHSL, IBPS & SBI PO)',
+        specialisations: 'Audit, Income Tax, Customs, Enforcement, Commercial & Central Banking',
+        scope: 'Income Tax Inspector, Assistant Section Officer, Bank Probationary Officer (PO)',
+        duration: 'Direct Recruitment via Competitive Exam',
+        topColleges: 'Central Government Ministries & Nationalized Banks',
+        salaryRange: '₹6 - 15+ LPA',
+        exams: ['SSC CGL', 'SSC CHSL (12th Level)', 'IBPS PO', 'SBI PO', 'RBI Grade B']
+      }
+    ]
+  }
+];
+
 const FAQS = [
   {
     q: "I still don't know what I want. Is that a problem?",
@@ -712,5 +1326,5 @@ const FAQS = [
 
 // Node.js module export compatibility for backend/tests if needed
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { CATS, QUESTIONS, EXAM_INFO, CAREERS, FAQS };
+  module.exports = { CATS, QUESTIONS, EXAM_INFO, CAREERS, COURSE_BRANCHES, FAQS };
 }

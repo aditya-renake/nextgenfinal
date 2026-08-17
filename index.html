@@ -40,8 +40,10 @@
       </div>
       <ul class="nav-links" id="navLinks">
         <li><a href="#quiz">Take the quiz</a></li>
-        <li><a href="#explorer">Explore careers</a></li>
+        <li><a href="#branches">Course Branches</a></li>
+        <li><a href="#explorer">Career Explorer</a></li>
         <li><a href="#timeline">Exam Calendar</a></li>
+        <li><a href="#govtexams">Govt &amp; Defence</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <a href="#quiz" class="nav-cta">Start Quiz</a>
@@ -103,13 +105,13 @@
           <p>A ten‑question compass that turns what you actually enjoy into real career paths — streams, entrance exams, degrees, and the roles waiting at the end of them.</p>
           <div class="hero-actions">
             <a href="#quiz" class="btn-primary">Take the 3‑minute quiz</a>
-            <a href="#explorer" class="btn-ghost">Browse all careers</a>
+            <a href="#branches" class="btn-ghost">🎓 Course Branches</a>
             <a href="#timeline" class="btn-ghost btn-outline-cyan">📅 Exam Calendar</a>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><b>8</b><span>CAREER DIRECTIONS</span></div>
-            <div class="hero-stat"><b>16</b><span>DETAILED ROADMAPS</span></div>
-            <div class="hero-stat"><b>10</b><span>QUESTIONS, NO LOGIN</span></div>
+            <div class="hero-stat"><b>50+</b><span>SPECIALISED BRANCHES</span></div>
+            <div class="hero-stat"><b>25+</b><span>EXAM TIMELINES</span></div>
           </div>
         </div>
         <div class="compass-wrap">
@@ -208,7 +210,7 @@
             </div>
             <div class="score-list" id="scoreList"></div>
             <div class="result-actions">
-              <a href="#explorer" class="btn-primary" id="exploreMatchBtn">See matching careers</a>
+              <a href="#branches" class="btn-primary" id="exploreMatchBtn">See matching course branches</a>
               <button class="btn-ghost" onclick="restartQuiz()">Retake quiz</button>
             </div>
           </div>
@@ -217,12 +219,48 @@
       </div>
     </section>
 
-    <!-- EXPLORER SECTION -->
+    <!-- COURSE & SPECIALISATION BRANCHES DIRECTORY (EXPANDABLE / SHRINKABLE BY MAIN STREAM) -->
+    <section id="branches" class="branches-section">
+      <div class="wrap reveal">
+        <div class="branches-header-flex">
+          <div>
+            <p class="eyebrow">Degree &amp; Specialisation Navigator</p>
+            <h2 class="section-title">All Course Branches, Structured</h2>
+            <p class="section-lede">Every course branch is neatly clustered under its primary discipline. Click any main branch to expand or shrink its sub-specialisations, career scopes, and salary benchmarks.</p>
+          </div>
+          <div class="branches-search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="branchSearchInput" placeholder="Search branch (e.g. AI, VLSI, MBBS, CA, NDA)..." aria-label="Search course branches">
+          </div>
+        </div>
+
+        <!-- Controls: Filter Chips & Expand/Collapse All -->
+        <div class="branches-controls-row">
+          <div class="branches-filter-chips" id="branchesFilterChips">
+            <!-- Rendered by JS: All, Engineering, Medicine, Commerce, Design, Law, Sciences, Media, Govt -->
+          </div>
+          <div class="branches-toggle-actions">
+            <button class="btn-toggle-all" id="btnExpandAll" onclick="toggleAllBranches(true)">Expand All ▾</button>
+            <button class="btn-toggle-all" id="btnCollapseAll" onclick="toggleAllBranches(false)">Shrink All ▴</button>
+          </div>
+        </div>
+
+        <!-- Container for Accordion / Shrinkable Disciplines -->
+        <div class="branches-stream-list" id="branchesContainer">
+          <!-- Rendered dynamically by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- CAREER EXPLORER SECTION -->
     <section id="explorer">
       <div class="wrap reveal">
-        <p class="eyebrow">Career explorer</p>
+        <p class="eyebrow">End-to-End Career Roadmaps</p>
         <h2 class="section-title">Sixteen paths, mapped end to end</h2>
-        <p class="section-lede">Filter by direction, or browse everything. Tap any exam name for its typical registration and exam window plus a link to the official site — exact dates shift slightly each year, so always confirm on the official page before applying.</p>
+        <p class="section-lede">Filter by direction, or browse everything. Tap any exam name for its typical registration and exam window plus a link to the official site.</p>
         <div class="filters" id="filters"></div>
         <div class="card-grid" id="cardGrid"></div>
       </div>
@@ -233,7 +271,7 @@
       <div class="wrap reveal">
         <div class="timeline-head-flex">
           <div>
-            <p class="eyebrow">Interactive Exam Calendar</p>
+            <p class="eyebrow">Interactive Exam &amp; Admissions Calendar</p>
             <h2 class="section-title">Timeline by Month</h2>
             <p class="section-lede">Click on any month to shrink and filter the timeline. Instantly see which registration forms are active, exam dates, and official test portals.</p>
           </div>
@@ -242,7 +280,7 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" id="timelineSearchInput" placeholder="Filter exams (e.g. JEE, NEET, CLAT)..." aria-label="Filter exams">
+            <input type="text" id="timelineSearchInput" placeholder="Filter exams (e.g. JEE, NEET, CLAT, NDA)..." aria-label="Filter exams">
           </div>
         </div>
 
@@ -262,6 +300,95 @@
         <!-- Month Exam Cards Grid -->
         <div class="timeline-grid" id="timelineGrid">
           <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- GOVERNMENT, DEFENCE & PUBLIC SERVICES PORTAL -->
+    <section id="govtexams" class="gov-section">
+      <div class="wrap reveal">
+        <div class="gov-head-wrap">
+          <p class="eyebrow">National Public Service &amp; Defence Pathways</p>
+          <h2 class="section-title">Government &amp; Defence Career Tracks</h2>
+          <p class="section-lede">Direct recruitment entries available right after 12th (NDA, Indian Navy Cadet, SSC CHSL) alongside premier graduation services (UPSC CSE IAS/IPS, Combined Defence CDS, AFCAT, RBI &amp; Banking PO).</p>
+        </div>
+
+        <div class="gov-grid">
+          <!-- NDA Card -->
+          <div class="gov-card">
+            <div class="gov-card-badge">Direct 10+2 Entry</div>
+            <span class="gov-icon">🎖️</span>
+            <h3>National Defence Academy (NDA)</h3>
+            <p class="gov-sub">Army, Navy &amp; Air Force Commissioned Officers</p>
+            <div class="gov-meta">
+              <span><b>Eligibility:</b> 12th Pass (PCM for Air Force/Navy; Any stream for Army)</span>
+              <span><b>Conducting:</b> UPSC (Twice a year: NDA-I in April, NDA-II in September)</span>
+              <span><b>Selection:</b> Written Test + 5-Day SSB Interview + Medicals</span>
+            </div>
+            <div class="gov-perks">
+              <span class="gp-tag">Full Sponsorship</span>
+              <span class="gp-tag">Level 10 Pay (₹56,100+)</span>
+              <span class="gp-tag">Military Officer Rank</span>
+            </div>
+            <a href="https://upsc.gov.in" target="_blank" rel="noopener noreferrer" class="timeline-btn-portal" style="margin-top:16px;">UPSC NDA Portal ↗</a>
+          </div>
+
+          <!-- 10+2 Navy BTech Card -->
+          <div class="gov-card">
+            <div class="gov-card-badge">10+2 Technical Entry</div>
+            <span class="gov-icon">⚓</span>
+            <h3>Indian Navy 10+2 B.Tech Cadet Scheme</h3>
+            <p class="gov-sub">Executive &amp; Technical Branch Officers at INA Ezhimala</p>
+            <div class="gov-meta">
+              <span><b>Eligibility:</b> 12th PCM with 70%+ aggregate and valid JEE Main Rank</span>
+              <span><b>Training:</b> 4-Year B.Tech Degree fully funded by Government</span>
+              <span><b>Selection:</b> Direct SSB Interview shortlist via JEE Main score</span>
+            </div>
+            <div class="gov-perks">
+              <span class="gp-tag">Free 4-Yr B.Tech Degree</span>
+              <span class="gp-tag">Sub Lieutenant Rank</span>
+              <span class="gp-tag">Permanent Commission</span>
+            </div>
+            <a href="https://www.joinindiannavy.gov.in" target="_blank" rel="noopener noreferrer" class="timeline-btn-portal" style="margin-top:16px;">Join Indian Navy ↗</a>
+          </div>
+
+          <!-- UPSC Civil Services -->
+          <div class="gov-card">
+            <div class="gov-card-badge">Post-Graduation Premier</div>
+            <span class="gov-icon">🏛️</span>
+            <h3>UPSC Civil Services (IAS, IPS, IFS, IRS)</h3>
+            <p class="gov-sub">Apex Public Administration &amp; Police Leadership</p>
+            <div class="gov-meta">
+              <span><b>Eligibility:</b> Graduation in any discipline (Class 12 foundation)</span>
+              <span><b>Structure:</b> Prelims (May) • Mains (August) • Personality Interview</span>
+              <span><b>Roles:</b> District Magistrate, Police Chief, Diplomat, Revenue Comm.</span>
+            </div>
+            <div class="gov-perks">
+              <span class="gp-tag">Apex Decision Making</span>
+              <span class="gp-tag">High Public Impact</span>
+              <span class="gp-tag">Constitutional Immunity</span>
+            </div>
+            <a href="https://upsc.gov.in" target="_blank" rel="noopener noreferrer" class="timeline-btn-portal" style="margin-top:16px;">UPSC Civil Services ↗</a>
+          </div>
+
+          <!-- SSC & Central Ministries -->
+          <div class="gov-card">
+            <div class="gov-card-badge">Central Govt Ministries</div>
+            <span class="gov-icon">🏢</span>
+            <h3>SSC CHSL (12th Pass) &amp; SSC CGL</h3>
+            <p class="gov-sub">Central Secretariat, Income Tax, Customs &amp; CBI</p>
+            <div class="gov-meta">
+              <span><b>CHSL:</b> Right after 12th for LDC, JSA &amp; Data Entry in Ministries</span>
+              <span><b>CGL:</b> Post-Graduation for Income Tax Inspector &amp; ASO in CSS</span>
+              <span><b>Exams:</b> Tier-1 (CBT) + Tier-2 Computer-Based Evaluation</span>
+            </div>
+            <div class="gov-perks">
+              <span class="gp-tag">Central Govt Security</span>
+              <span class="gp-tag">Defined Work Hours</span>
+              <span class="gp-tag">Pension &amp; CGHS</span>
+            </div>
+            <a href="https://ssc.gov.in" target="_blank" rel="noopener noreferrer" class="timeline-btn-portal" style="margin-top:16px;">SSC Official Portal ↗</a>
+          </div>
         </div>
       </div>
     </section>
@@ -294,8 +421,10 @@
         <div class="footer-brand">NexGen Careers</div>
         <ul class="footer-links">
           <li><a href="#quiz">Quiz</a></li>
+          <li><a href="#branches">Branches</a></li>
           <li><a href="#explorer">Explorer</a></li>
           <li><a href="#timeline">Exam Calendar</a></li>
+          <li><a href="#govtexams">Govt &amp; Defence</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>

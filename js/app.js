@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initApp() {
   initMobileNav();
   initCompassVisuals();
+  initCourseBranches();
   initExplorer();
   initTimelineCalendar();
   initFAQ();
@@ -18,9 +19,9 @@ function initApp() {
 
 window.filterByCareerTag = function(catId) {
   setActiveFilter(catId);
-  const explorer = document.getElementById('explorer');
-  if (explorer) {
-    explorer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const target = document.getElementById('branches') || document.getElementById('explorer');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 };
 
@@ -261,6 +262,207 @@ function showResults() {
     };
   }
 }
+
+/* ============ COURSE BRANCHES DIRECTORY (EXPANDABLE / SHRINKABLE) ============ */
+let activeBranchFilter = 'all';
+let branchSearchQuery = '';
+let expandedBranchStreams = new Set(['eng', 'med']);
+
+function initCourseBranches() {
+  const chipsWrap = document.getElementById('branchesFilterChips');
+  const searchInput = document.getElementById('branchSearchInput');
+
+  if (!chipsWrap && !searchInput) return;
+
+  renderBranchFilterChips();
+  renderCourseBranches();
+
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      branchSearchQuery = e.target.value.trim().toLowerCase();
+      // Auto-expand all streams when user searches
+      if (branchSearchQuery) {
+        COURSE_BRANCHES.forEach(s => expandedBranchStreams.add(s.id));
+      }
+      renderCourseBranches();
+    });
+  }
+}
+
+function renderBranchFilterChips() {
+  const chipsWrap = document.getElementById('branchesFilterChips');
+  if (!chipsWrap || typeof COURSE_BRANCHES === 'undefined') return;
+
+  chipsWrap.innerHTML = '';
+  
+  const allBtn = document.createElement('button');
+  allBtn.className = `chip ${activeBranchFilter === 'all' ? 'active' : ''}`;
+  allBtn.textContent = 'All Streams';
+  allBtn.onclick = () => {
+    activeBranchFilter = 'all';
+    document.querySelectorAll('#branchesFilterChips .chip').forEach(c => c.classList.remove('active'));
+    allBtn.classList.add('active');
+    renderCourseBranches();
+  };
+  chipsWrap.appendChild(allBtn);
+
+  COURSE_BRANCHES.forEach(stream => {
+    const btn = document.createElement('button');
+    btn.className = `chip ${activeBranchFilter === stream.id ? 'active' : ''}`;
+    btn.textContent = `${stream.icon} ${stream.name.split(',')[0]}`;
+    btn.onclick = () => {
+      activeBranchFilter = stream.id;
+      document.querySelectorAll('#branchesFilterChips .chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      expandedBranchStreams.add(stream.id);
+      renderCourseBranches();
+    };
+    chipsWrap.appendChild(btn);
+  });
+}
+
+function renderCourseBranches() {
+  const container = document.getElementById('branchesContainer');
+  if (!container || typeof COURSE_BRANCHES === 'undefined') return;
+
+  let streams = [...COURSE_BRANCHES];
+
+  if (activeBranchFilter !== 'all') {
+    streams = streams.filter(s => s.id === activeBranchFilter);
+  }
+
+  if (branchSearchQuery) {
+    streams = streams.map(s => {
+      const filteredBranches = s.branches.filter(b => {
+        return (
+          b.name.toLowerCase().includes(branchSearchQuery) ||
+          b.specialisations.toLowerCase().includes(branchSearchQuery) ||
+          b.scope.toLowerCase().includes(branchSearchQuery) ||
+          b.topColleges.toLowerCase().includes(branchSearchQuery) ||
+          s.name.toLowerCase().includes(branchSearchQuery)
+        );
+      });
+      return { ...s, branches: filteredBranches };
+    }).filter(s => s.branches.length > 0);
+  }
+
+  if (streams.length === 0) {
+    container.innerHTML = `
+      <div class="timeline-empty">
+        <div class="empty-icon">🔍</div>
+        <h3>No course branches found</h3>
+        <p>No specialisations matched "${branchSearchQuery}". Try clearing search or selecting All Streams.</p>
+        <button class="btn-ghost" onclick="resetBranchFilter()">Show All Streams</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+
+  streams.forEach((stream, sIdx) => {
+    const isExpanded = expandedBranchStreams.has(stream.id);
+    const module = document.createElement('div');
+    module.className = `branch-stream-module ${isExpanded ? 'is-open' : 'is-shrunk'}`;
+    module.style.animationDelay = `${sIdx * 0.05}s`;
+
+    const branchCardsHTML = stream.branches.map(b => {
+      const examBadges = (b.exams || []).map(e => `<span class="bi-exam-pill">${e}</span>`).join('');
+      return `
+        <div class="branch-item-card">
+          <div class="bi-head">
+            <h4 class="bi-title">${b.name}</h4>
+            <span class="bi-duration">${b.duration}</span>
+          </div>
+          
+          <div class="bi-section">
+            <span class="bi-label">Specialisations &amp; Focus:</span>
+            <p class="bi-text bi-spec">${b.specialisations}</p>
+          </div>
+
+          <div class="bi-section">
+            <span class="bi-label">Career Scope &amp; Job Roles:</span>
+            <p class="bi-text">${b.scope}</p>
+          </div>
+
+          <div class="bi-meta-grid">
+            <div>
+              <span class="bi-label">Top Institutions:</span>
+              <p class="bi-sub">${b.topColleges}</p>
+            </div>
+            <div>
+              <span class="bi-label">Average CTC:</span>
+              <p class="bi-sub bi-salary">${b.salaryRange}</p>
+            </div>
+          </div>
+
+          ${examBadges ? `
+            <div class="bi-exams-row">
+              <span class="bi-exams-label">ENTRANCE EXAMS:</span>
+              ${examBadges}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+
+    module.innerHTML = `
+      <div class="bs-header" onclick="toggleStreamAccordion('${stream.id}')">
+        <div class="bs-head-left">
+          <span class="bs-icon">${stream.icon}</span>
+          <div>
+            <div class="bs-title-row">
+              <h3 class="bs-name">${stream.name}</h3>
+              <span class="bs-badge">${stream.badge || 'Degree Track'}</span>
+            </div>
+            <p class="bs-degrees">${stream.degrees} • <span class="bs-stream-req">${stream.streamReq}</span></p>
+          </div>
+        </div>
+        <div class="bs-head-right">
+          <span class="bs-count-pill">${stream.branches.length} Branches</span>
+          <button class="bs-toggle-btn" aria-label="Expand or shrink branch">${isExpanded ? 'Shrink ▴' : 'Expand ▾'}</button>
+        </div>
+      </div>
+
+      <div class="bs-body ${isExpanded ? 'open' : 'collapsed'}">
+        <p class="bs-desc">${stream.desc}</p>
+        <div class="bs-branches-grid">
+          ${branchCardsHTML}
+        </div>
+      </div>
+    `;
+
+    container.appendChild(module);
+  });
+}
+
+window.toggleStreamAccordion = function (streamId) {
+  if (expandedBranchStreams.has(streamId)) {
+    expandedBranchStreams.delete(streamId);
+  } else {
+    expandedBranchStreams.add(streamId);
+  }
+  renderCourseBranches();
+};
+
+window.toggleAllBranches = function (expand) {
+  if (expand && typeof COURSE_BRANCHES !== 'undefined') {
+    COURSE_BRANCHES.forEach(s => expandedBranchStreams.add(s.id));
+  } else {
+    expandedBranchStreams.clear();
+  }
+  renderCourseBranches();
+};
+
+window.resetBranchFilter = function () {
+  activeBranchFilter = 'all';
+  branchSearchQuery = '';
+  const input = document.getElementById('branchSearchInput');
+  if (input) input.value = '';
+  expandedBranchStreams = new Set(['eng', 'med']);
+  renderBranchFilterChips();
+  renderCourseBranches();
+};
 
 /* ============ EXPLORER ============ */
 let activeFilter = 'all';
