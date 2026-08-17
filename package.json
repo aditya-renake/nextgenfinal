@@ -1,7 +1,7 @@
 {
-  "name": "compass-career-guide",
+  "name": "nexgen-careers",
   "version": "1.0.0",
-  "description": "Interactive career orientation guide for students after 12th grade",
+  "description": "NexGen Careers - Interactive career orientation guide for students after 12th grade",
   "main": "js/app.js",
   "scripts": {
     "dev": "npx serve .",

@@ -1,6 +1,6 @@
-# 🧭 Compass — Find Your Path After 12th
+# 🧭 NexGen Careers — Find Your Path After 12th
 
-An interactive, responsive career orientation web application designed for students completing 12th grade. Featuring a 10-question situational compass quiz, dynamic SVG dial animations, end-to-end career roadmaps, exam timelines, official test registration links, and serverless API endpoints.
+An interactive, responsive career orientation web application designed for students completing 12th grade. Featuring a 10-question situational career compass quiz, dynamic SVG dial animations, end-to-end career roadmaps, exam timelines, official test registration links, and serverless API endpoints.
 
 ---
 
