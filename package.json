@@ -1,0 +1,19 @@
+{
+  "name": "compass-career-guide",
+  "version": "1.0.0",
+  "description": "Interactive career orientation guide for students after 12th grade",
+  "main": "js/app.js",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "career-guide",
+    "quiz",
+    "12th-grade",
+    "education",
+    "vercel"
+  ],
+  "author": "",
+  "license": "MIT"
+}

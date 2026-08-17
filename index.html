@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compass — Find your path after 12th</title>
+  <meta name="description" content="An interactive career orientation guide for students after 12th grade. Take the compass quiz, discover your direction, and explore real career roadmaps.">
+  <meta name="theme-color" content="#0E1526">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Compass — Find your path after 12th">
+  <meta property="og:description" content="An interactive career orientation guide for students after 12th grade. Take the compass quiz, discover your direction, and explore real career roadmaps.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER / NAVIGATION -->
+  <header>
+    <nav aria-label="Main Navigation">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#E8B44C" stroke-width="1.4"/>
+          <path d="M14 6 L16.4 12.6 L14 22 L11.6 12.6 Z" fill="#E8B44C"/>
+        </svg>
+        <span>Compass</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#quiz">Take the quiz</a></li>
+        <li><a href="#explorer">Explore careers</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#quiz" class="nav-cta">Start</a>
+      <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">For students after 12th</p>
+          <h1>You don't need <em>the</em> right answer.<br>Just your next direction.</h1>
+          <p>A ten‑question compass that turns what you actually enjoy into real career paths — streams, entrance exams, degrees, and the roles waiting at the end of them.</p>
+          <div class="hero-actions">
+            <a href="#quiz" class="btn-primary">Take the 3‑minute quiz</a>
+            <a href="#explorer" class="btn-ghost">Browse all careers</a>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><b>8</b><span>CAREER DIRECTIONS</span></div>
+            <div class="hero-stat"><b>16</b><span>DETAILED ROADMAPS</span></div>
+            <div class="hero-stat"><b>10</b><span>QUESTIONS, NO LOGIN</span></div>
+          </div>
+        </div>
+        <div class="compass-wrap">
+          <div class="compass-glow" aria-hidden="true"></div>
+          <svg viewBox="0 0 400 400" width="360" height="360" role="img" aria-label="Interactive Compass Graphic">
+            <circle cx="200" cy="200" r="150" stroke="#2A3560" stroke-width="1"/>
+            <circle cx="200" cy="200" r="112" stroke="#242E52" stroke-width="1"/>
+            <g id="heroTicks"></g>
+            <g id="heroLabels"></g>
+            <g id="heroNeedle" transform="rotate(20)">
+              <path d="M200 70 L212 200 L200 330 L188 200 Z" fill="#E8B44C" opacity="0.85"/>
+              <path d="M200 70 L212 200 L200 200 Z" fill="#F2CD7C"/>
+            </g>
+            <circle cx="200" cy="200" r="9" fill="#0E1526" stroke="#E8B44C" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how" id="how">
+      <div class="wrap reveal">
+        <p class="eyebrow">How it works</p>
+        <h2 class="section-title">Three steps, no guesswork</h2>
+        <p class="section-lede">Built for the moment right after boards — when everyone has an opinion about your future except a way to test it.</p>
+        <div class="how-grid">
+          <div class="how-card">
+            <span class="num">01</span>
+            <h3>Answer honestly</h3>
+            <p>Ten quick situations, not aptitude tests. Pick what you'd actually do, not what sounds impressive.</p>
+          </div>
+          <div class="how-card">
+            <span class="num">02</span>
+            <h3>See your direction</h3>
+            <p>The compass needle settles on the field your answers actually point to — with a full breakdown, not just one label.</p>
+          </div>
+          <div class="how-card">
+            <span class="num">03</span>
+            <h3>Read the real roadmap</h3>
+            <p>Every match comes with the stream, entrance exams, degree path and job roles — the parts nobody explains clearly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ SECTION -->
+    <section id="quiz">
+      <div class="wrap">
+        <div style="text-align:center; margin-bottom:40px;" class="reveal">
+          <p class="eyebrow" style="justify-content:center;">The compass quiz</p>
+          <h2 class="section-title">What actually pulls your attention?</h2>
+        </div>
+
+        <div class="quiz-shell reveal">
+
+          <!-- Quiz Intro State -->
+          <div class="quiz-intro active" id="quizIntro">
+            <p style="color:var(--text-muted); font-size:15.5px; margin-bottom:24px;">There's no pass or fail here — just a faster way to see the pattern in what you enjoy. Takes about 3 minutes.</p>
+            <button class="btn-primary" onclick="startQuiz()" style="width:100%; text-align:center; border:none;">Begin</button>
+          </div>
+
+          <!-- Quiz Active Questions State -->
+          <div class="quiz-questions" id="quizQuestions">
+            <div class="quiz-top">
+              <span class="quiz-count" id="quizCount">Q 01 / 10</span>
+              <button class="quiz-restart" onclick="restartQuiz()">restart</button>
+            </div>
+            <div class="quiz-bar"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
+            <div class="quiz-q" id="quizQ"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-nav">
+              <button class="quiz-back" id="quizBackBtn" onclick="goBack()" disabled>← previous question</button>
+            </div>
+          </div>
+
+          <!-- Quiz Results State -->
+          <div class="quiz-results" id="quizResults">
+            <div class="result-top">
+              <p class="result-badge">Your compass reading</p>
+              <h3 class="result-title" id="resultTitle">—</h3>
+              <p class="result-sub" id="resultSub">—</p>
+            </div>
+            <div class="compass-result">
+              <svg viewBox="0 0 400 400" width="260" height="260" role="img" aria-label="Result Compass Needle">
+                <circle cx="200" cy="200" r="150" stroke="#2A3560" stroke-width="1"/>
+                <circle cx="200" cy="200" r="112" stroke="#242E52" stroke-width="1"/>
+                <g id="resultTicks"></g>
+                <g id="resultLabels"></g>
+                <g id="resultNeedle" transform="rotate(0)">
+                  <path d="M200 70 L212 200 L200 330 L188 200 Z" fill="#4FB6A8" opacity="0.9"/>
+                  <path d="M200 70 L212 200 L200 200 Z" fill="#8fdccf"/>
+                </g>
+                <circle cx="200" cy="200" r="9" fill="#0E1526" stroke="#4FB6A8" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="score-list" id="scoreList"></div>
+            <div class="result-actions">
+              <a href="#explorer" class="btn-primary" id="exploreMatchBtn">See matching careers</a>
+              <button class="btn-ghost" onclick="restartQuiz()">Retake quiz</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPLORER SECTION -->
+    <section id="explorer">
+      <div class="wrap reveal">
+        <p class="eyebrow">Career explorer</p>
+        <h2 class="section-title">Sixteen paths, mapped end to end</h2>
+        <p class="section-lede">Filter by direction, or browse everything. Tap any exam name for its typical registration and exam window plus a link to the official site — exact dates shift slightly each year, so always confirm on the official page before applying.</p>
+        <div class="filters" id="filters"></div>
+        <div class="card-grid" id="cardGrid"></div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq">
+      <div class="wrap reveal" style="text-align:center;">
+        <p class="eyebrow" style="justify-content:center;">Common questions</p>
+        <h2 class="section-title">Before you decide anything</h2>
+      </div>
+      <div class="faq-list reveal" id="faqList"></div>
+    </section>
+
+    <!-- CTA BANNER SECTION -->
+    <section>
+      <div class="wrap">
+        <div class="cta-strip reveal">
+          <h2>Still not sure? That's normal at 17.</h2>
+          <p>Most people change direction at least once after 12th — the goal isn't a permanent answer, it's a good next step. Take the quiz, read two or three roadmaps, and talk it over with someone who knows you.</p>
+          <a href="#quiz" class="btn-primary">Take the quiz again</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">Compass</div>
+        <ul class="footer-links">
+          <li><a href="#quiz">Quiz</a></li>
+          <li><a href="#explorer">Explorer</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-note">
+        Compass is a starting point for research, not a substitute for a school counsellor, a mentor in the field, or a conversation with your family. Course names, entrance exams and eligibility change — always confirm details on the official university or exam board website before applying.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
