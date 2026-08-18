@@ -86,17 +86,6 @@
       });
     }
 
-    // Quick demo login fill
-    const demoFillBtn = document.getElementById('adminDemoFillBtn');
-    if (demoFillBtn) {
-      demoFillBtn.addEventListener('click', () => {
-        const emailInput = document.getElementById('adminEmailInput');
-        const passInput = document.getElementById('adminPassInput');
-        if (emailInput) emailInput.value = 'admin@nexgen.edu';
-        if (passInput) passInput.value = 'admin123';
-      });
-    }
-
     // Logout button
     const logoutBtn = document.getElementById('adminLogoutBtn');
     if (logoutBtn) {

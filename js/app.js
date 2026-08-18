@@ -1187,13 +1187,6 @@ window.handleStudentSignUp = function (e) {
   }
 };
 
-window.quickFillDemoStudent = function () {
-  const ident = document.getElementById('signInIdentifier');
-  const pass = document.getElementById('signInPassword');
-  if (ident) ident.value = 'aarav.sharma2026@gmail.com';
-  if (pass) pass.value = 'password123';
-};
-
 window.handleStudentSignOut = function () {
   if (confirm('Are you sure you want to sign out?')) {
     UserStorage.logoutUser();

@@ -10,9 +10,8 @@ const CURRENT_USER_KEY = 'nexgen_current_user';
 
 // Admin credential constants
 const ADMIN_CREDENTIALS = {
-  email: 'admin@nexgen.edu',
-  passcode: 'admin123',
-  password: 'admin'
+  email: 'aditya.renake@outlook.com',
+  passcode: 'Aditya@11'
 };
 
 // Initial realistic seed dataset representing diverse student registrations across India
@@ -402,8 +401,8 @@ const UserStorage = {
       return { success: false, message: 'Student record not found. Please Sign Up first.' };
     }
 
-    if (found.password && passTrim && found.password !== passTrim && passTrim !== 'password123' && passTrim !== 'admin123') {
-      return { success: false, message: 'Incorrect password. Try "password123" for demo accounts.' };
+    if (found.password && passTrim && found.password !== passTrim) {
+      return { success: false, message: 'Incorrect password. Please try again.' };
     }
 
     found.lastActive = new Date().toISOString();
@@ -447,8 +446,8 @@ const UserStorage = {
     const idTrim = (identifier || '').trim().toLowerCase();
     const passTrim = (password || '').trim();
 
-    const isEmailMatch = idTrim === ADMIN_CREDENTIALS.email || idTrim === 'admin' || idTrim === 'admin@nexgen.com';
-    const isPassMatch = passTrim === ADMIN_CREDENTIALS.passcode || passTrim === ADMIN_CREDENTIALS.password || passTrim === 'admin2026' || passTrim === 'admin123';
+    const isEmailMatch = idTrim === ADMIN_CREDENTIALS.email.toLowerCase();
+    const isPassMatch = passTrim === ADMIN_CREDENTIALS.passcode;
 
     if (isEmailMatch && isPassMatch) {
       try {
@@ -465,7 +464,7 @@ const UserStorage = {
 
     return { 
       success: false, 
-      message: 'Invalid Admin Credentials. Default login is admin@nexgen.edu / admin123' 
+      message: 'Invalid Administrator Credentials. Please check your email and passcode.' 
     };
   },
 
