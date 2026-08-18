@@ -45,9 +45,18 @@
         <li><a href="#timeline">Exam Calendar</a></li>
         <li><a href="#govtexams">Govt &amp; Defence</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="admin.html" class="nav-admin-link">🔐 Admin Portal</a></li>
       </ul>
-      <a href="#quiz" class="nav-cta">Start Quiz</a>
-      <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
+      <div class="nav-actions-group">
+        <div class="nav-auth-container" id="navAuthContainer">
+          <!-- Dynamically populated: Sign In button or User Profile Pill -->
+          <button class="btn-nav-signin" onclick="openAuthModal('signin')">
+            <span>Sign In</span>
+          </button>
+        </div>
+        <a href="#quiz" class="nav-cta">Start Quiz</a>
+        <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
+      </div>
     </nav>
   </header>
 
@@ -209,6 +218,59 @@
               </svg>
             </div>
             <div class="score-list" id="scoreList"></div>
+
+            <!-- USER REGISTRATION & COUNSELING LEAD CAPTURE -->
+            <div class="lead-capture-card" id="leadCaptureCard">
+              <div class="lcc-badge">🎯 Save Your Career Report</div>
+              <h4 class="lcc-title">Get 1-on-1 Free Career Counseling &amp; Full Report</h4>
+              <p class="lcc-sub">Enter your details to save your compass report, receive tailored cutoffs for top colleges, and connect with verified mentors.</p>
+              <form id="leadRegisterForm" onsubmit="handleUserRegistration(event)" class="lcc-form">
+                <div class="lcc-form-grid">
+                  <div class="lcc-input-group">
+                    <label for="regName">Full Name *</label>
+                    <input type="text" id="regName" required placeholder="e.g. Rahul Sharma" autocomplete="name">
+                  </div>
+                  <div class="lcc-input-group">
+                    <label for="regPhone">WhatsApp / Phone *</label>
+                    <input type="tel" id="regPhone" required placeholder="e.g. 9876543210" autocomplete="tel">
+                  </div>
+                  <div class="lcc-input-group">
+                    <label for="regEmail">Email Address *</label>
+                    <input type="email" id="regEmail" required placeholder="e.g. rahul@gmail.com" autocomplete="email">
+                  </div>
+                  <div class="lcc-input-group">
+                    <label for="regStream">Current Stream *</label>
+                    <select id="regStream" required>
+                      <option value="">Select your stream</option>
+                      <option value="Class 12 Science (PCM)">Class 12 Science (PCM)</option>
+                      <option value="Class 12 Science (PCB)">Class 12 Science (PCB)</option>
+                      <option value="Class 12 Commerce with Maths">Class 12 Commerce with Maths</option>
+                      <option value="Class 12 Commerce">Class 12 Commerce</option>
+                      <option value="Class 12 Arts &amp; Humanities">Class 12 Arts &amp; Humanities</option>
+                      <option value="Class 10 / 11 Student">Class 10 / 11 Student</option>
+                      <option value="12th Passed / Gap Year Dropper">12th Passed / Gap Year Dropper</option>
+                    </select>
+                  </div>
+                  <div class="lcc-input-group full-width">
+                    <label for="regCity">City / State</label>
+                    <input type="text" id="regCity" placeholder="e.g. Pune, Maharashtra">
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary lcc-submit-btn" id="regSubmitBtn">
+                  <span>Save Report &amp; Request Free Counseling ↗</span>
+                </button>
+              </form>
+              <div class="lcc-success" id="lccSuccess" style="display:none;">
+                <div class="lcc-success-icon">🎉</div>
+                <h4>Your Career Profile is Registered!</h4>
+                <p id="lccSuccessMsg">Student ID: <b id="lccId">NXG-2026-0899</b>. Your detailed report is saved. Our counselor will connect with you shortly.</p>
+                <div class="lcc-success-actions">
+                  <button class="btn-ghost btn-outline-cyan" onclick="downloadStudentReport()">📄 Download Report Summary</button>
+                  <a href="https://wa.me/919876543210?text=Hi%2C%20I%20just%20completed%20the%20NexGen%20Careers%20quiz%20and%20would%20like%20counseling" target="_blank" class="btn-primary btn-wa">💬 Chat on WhatsApp</a>
+                </div>
+              </div>
+            </div>
+
             <div class="result-actions">
               <a href="#branches" class="btn-primary" id="exploreMatchBtn">See matching course branches</a>
               <button class="btn-ghost" onclick="restartQuiz()">Retake quiz</button>
@@ -426,6 +488,7 @@
           <li><a href="#timeline">Exam Calendar</a></li>
           <li><a href="#govtexams">Govt &amp; Defence</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="admin.html" style="color:var(--cyan); font-weight:600;">🔐 Admin Portal</a></li>
         </ul>
       </div>
       <div class="footer-note">
@@ -434,8 +497,186 @@
     </div>
   </footer>
 
+  <!-- ================= AUTHENTICATION MODAL (SIGN IN / SIGN UP) ================= -->
+  <div class="modal-overlay" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <div class="modal-backdrop" onclick="closeAuthModal()"></div>
+    <div class="modal-box modal-sm">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-badge-eyebrow">Student &amp; Admin Access</span>
+          <h3 class="modal-title" id="authModalTitle">Sign In to NexGen</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <!-- Auth Navigation Tabs -->
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')">Student Sign In</button>
+        <button type="button" class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')">New Student Sign Up</button>
+        <button type="button" class="auth-tab" id="tabAdmin" onclick="switchAuthTab('admin')">Admin Gateway</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="admin-alert-error" id="authErrorMsg" style="display:none;"></div>
+        <div class="admin-alert-success" id="authSuccessMsg" style="display:none;"></div>
+
+        <!-- 1. SIGN IN FORM -->
+        <form id="signInForm" class="auth-form active" onsubmit="handleStudentSignIn(event)">
+          <div class="form-group">
+            <label for="signInIdentifier">Email, Student ID, or Phone</label>
+            <input type="text" id="signInIdentifier" required placeholder="e.g. aarav.sharma2026@gmail.com" autocomplete="username">
+          </div>
+          <div class="form-group">
+            <div class="label-with-hint">
+              <label for="signInPassword">Password</label>
+              <span class="input-hint">Demo: password123</span>
+            </div>
+            <input type="password" id="signInPassword" placeholder="••••••••" value="password123" autocomplete="current-password">
+          </div>
+          <div class="form-row-remember">
+            <button type="button" class="btn-link-action" onclick="quickFillDemoStudent()">Autofill Demo Student</button>
+          </div>
+          <button type="submit" class="btn-primary btn-block">
+            <span>Sign In to Account →</span>
+          </button>
+          <div class="auth-switch-text">
+            <span>Don't have a profile yet?</span>
+            <button type="button" class="btn-link-highlight" onclick="switchAuthTab('signup')">Sign Up Free</button>
+          </div>
+        </form>
+
+        <!-- 2. SIGN UP FORM -->
+        <form id="signUpForm" class="auth-form" onsubmit="handleStudentSignUp(event)" style="display:none;">
+          <div class="form-group">
+            <label for="signUpName">Full Name *</label>
+            <input type="text" id="signUpName" required placeholder="e.g. Aditi Rao" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="signUpEmail">Email Address *</label>
+            <input type="email" id="signUpEmail" required placeholder="e.g. aditi@gmail.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="signUpPhone">WhatsApp / Phone *</label>
+            <input type="tel" id="signUpPhone" required placeholder="e.g. 9876543210" autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label for="signUpStream">Current 12th Stream *</label>
+            <select id="signUpStream" required>
+              <option value="Class 12 Science (PCM)">Class 12 Science (PCM)</option>
+              <option value="Class 12 Science (PCB)">Class 12 Science (PCB)</option>
+              <option value="Class 12 Commerce with Maths">Class 12 Commerce with Maths</option>
+              <option value="Class 12 Commerce">Class 12 Commerce</option>
+              <option value="Class 12 Arts &amp; Humanities">Class 12 Arts &amp; Humanities</option>
+              <option value="12th Passed / Gap Year Dropper">12th Passed / Gap Year Dropper</option>
+              <option value="Class 10 / 11 Student">Class 10 / 11 Student</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="signUpCity">City / State</label>
+            <input type="text" id="signUpCity" placeholder="e.g. Bengaluru, Karnataka">
+          </div>
+          <div class="form-group">
+            <label for="signUpPassword">Set Password (Optional)</label>
+            <input type="password" id="signUpPassword" placeholder="password123" value="password123" autocomplete="new-password">
+          </div>
+          <button type="submit" class="btn-primary btn-block">
+            <span>Create Student Account &amp; Save Profile ↗</span>
+          </button>
+          <div class="auth-switch-text">
+            <span>Already registered?</span>
+            <button type="button" class="btn-link-highlight" onclick="switchAuthTab('signin')">Sign In</button>
+          </div>
+        </form>
+
+        <!-- 3. ADMIN GATEWAY TAB -->
+        <div id="adminTabContent" class="auth-form" style="display:none;">
+          <div class="admin-tab-box">
+            <div class="admin-tab-icon">🔐</div>
+            <h4>Administrator Portal Access</h4>
+            <p>Access the unified CRM to inspect student dossiers, counseling notes, full quiz breakdown scores, and CSV exports.</p>
+            <div class="admin-tab-creds">
+              <span><b>Default Email:</b> admin@nexgen.edu</span>
+              <span><b>Default Passcode:</b> admin123</span>
+            </div>
+            <a href="admin.html" class="btn-primary btn-block text-center" style="text-decoration:none; display:block; text-align:center;">
+              <span>Open Admin Portal ↗</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= STUDENT PROFILE MODAL ================= -->
+  <div class="modal-overlay" id="userProfileModal" role="dialog" aria-modal="true" aria-labelledby="profileStudentName">
+    <div class="modal-backdrop" onclick="closeUserProfileModal()"></div>
+    <div class="modal-box modal-md">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-badge-eyebrow">Student Account</span>
+          <h3 class="modal-title" id="profileStudentName">My Career Profile</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeUserProfileModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="profile-card-header">
+          <div class="profile-avatar-lg" id="profileAvatar">ST</div>
+          <div class="profile-header-info">
+            <h4 id="profileFullName">Student Name</h4>
+            <p class="profile-sub-line">
+              <span id="profileStream">Science (PCM)</span> • <span id="profileCity">India</span>
+            </p>
+            <div class="profile-meta-tags">
+              <span class="profile-id-pill" id="profileId">NXG-2026-0891</span>
+              <span class="status-badge status-new" id="profileStatus">Active Student</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-details-grid">
+          <div class="pd-item">
+            <span class="pd-label">Email Address</span>
+            <span class="pd-val" id="profileEmail">student@gmail.com</span>
+          </div>
+          <div class="pd-item">
+            <span class="pd-label">Phone / WhatsApp</span>
+            <span class="pd-val" id="profilePhone">+91 98765 43210</span>
+          </div>
+        </div>
+
+        <!-- Career Compass Snapshot -->
+        <div class="profile-match-banner">
+          <div class="pmb-top">
+            <span class="pmb-label">Saved Compass Direction</span>
+            <span class="match-score-pill score-high" id="profileScorePct">94% Match</span>
+          </div>
+          <h4 class="pmb-title" id="profileTopMatch">AI, Tech &amp; Computer Engineering</h4>
+          <p class="pmb-sub">Target entrance exams: <b id="profileTargetExams">JEE Main, BITSAT</b></p>
+        </div>
+
+        <div class="profile-actions-stack">
+          <a href="#quiz" class="btn-primary btn-block text-center" onclick="closeUserProfileModal(); restartQuiz();">
+            <span>Retake Compass Quiz 🔄</span>
+          </a>
+          <button type="button" class="btn-ghost btn-block" onclick="downloadStudentReport()">
+            <span>📄 Download My Report Summary</span>
+          </button>
+          <a href="admin.html" class="btn-ghost btn-block text-center" style="color:var(--cyan); border-color:rgba(6,182,212,0.3);">
+            <span>🔐 Admin Portal Gateway</span>
+          </a>
+          <button type="button" class="btn-logout-full" onclick="handleStudentSignOut()">
+            <span>Sign Out of Account 🚪</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

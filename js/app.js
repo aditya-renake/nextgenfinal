@@ -15,6 +15,7 @@ function initApp() {
   initTimelineCalendar();
   initFAQ();
   initScrollReveal();
+  initAuthUI();
 }
 
 window.filterByCareerTag = function(catId) {
@@ -209,59 +210,189 @@ function showResults() {
     pct: Math.round((scores[c.id] / maxPer[c.id]) * 100)
   })).sort((a, b) => b.score - a.score);
 
-  const top = ranked[0];
-
-  const questionsEl = document.getElementById('quizQuestions');
-  const resultsEl = document.getElementById('quizResults');
-  if (questionsEl) questionsEl.classList.remove('active');
-  if (resultsEl) resultsEl.classList.add('active');
-
-  const titleEl = document.getElementById('resultTitle');
-  const subEl = document.getElementById('resultSub');
-  if (titleEl) titleEl.textContent = top.name;
-  if (subEl) {
-    subEl.textContent = `Your answers point most strongly toward ${top.name.toLowerCase()} — here's the full breakdown, plus matching roadmaps below.`;
-  }
-
-  const resultNeedle = document.getElementById('resultNeedle');
-  if (resultNeedle) {
-    resultNeedle.setAttribute('transform', `rotate(${top.angle})`);
-  }
-
-  document.querySelectorAll('#resultLabels .compass-label').forEach(l => {
-    l.classList.toggle('active', l.getAttribute('data-cat') === top.id);
-  });
-
-  const scoreList = document.getElementById('scoreList');
-  if (scoreList) {
-    scoreList.innerHTML = '';
-    ranked.forEach(c => {
-      const row = document.createElement('div');
-      row.className = 'score-row';
-      row.innerHTML = `
-        <div class="score-name">${c.name}</div>
-        <div class="score-track"><div class="score-fill" style="width:0%" data-target="${c.pct}"></div></div>
-        <div class="score-pct">${c.pct}%</div>
-      `;
-      scoreList.appendChild(row);
-    });
-
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        document.querySelectorAll('.score-fill').forEach(f => {
-          f.style.width = f.dataset.target + '%';
-        });
-      }, 80);
-    });
-  }
-
-  const matchBtn = document.getElementById('exploreMatchBtn');
-  if (matchBtn) {
-    matchBtn.onclick = () => {
-      setActiveFilter(top.id);
+    const top = ranked[0];
+    latestQuizSnapshot = {
+      topCategory: top,
+      ranked: ranked,
+      scores: scores
     };
+
+    // Auto-sync if student is logged in
+    if (typeof UserStorage !== 'undefined' && UserStorage.getCurrentUser()) {
+      UserStorage.syncQuizResult(latestQuizSnapshot);
+    }
+
+    const questionsEl = document.getElementById('quizQuestions');
+    const resultsEl = document.getElementById('quizResults');
+    if (questionsEl) questionsEl.classList.remove('active');
+    if (resultsEl) resultsEl.classList.add('active');
+
+    const titleEl = document.getElementById('resultTitle');
+    const subEl = document.getElementById('resultSub');
+    if (titleEl) titleEl.textContent = top.name;
+    if (subEl) {
+      subEl.textContent = `Your answers point most strongly toward ${top.name.toLowerCase()} — here's the full breakdown, plus matching roadmaps below.`;
+    }
+
+    const resultNeedle = document.getElementById('resultNeedle');
+    if (resultNeedle) {
+      resultNeedle.setAttribute('transform', `rotate(${top.angle})`);
+    }
+
+    document.querySelectorAll('#resultLabels .compass-label').forEach(l => {
+      l.classList.toggle('active', l.getAttribute('data-cat') === top.id);
+    });
+
+    const scoreList = document.getElementById('scoreList');
+    if (scoreList) {
+      scoreList.innerHTML = '';
+      ranked.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'score-row';
+        row.innerHTML = `
+          <div class="score-name">${c.name}</div>
+          <div class="score-track"><div class="score-fill" style="width:0%" data-target="${c.pct}"></div></div>
+          <div class="score-pct">${c.pct}%</div>
+        `;
+        scoreList.appendChild(row);
+      });
+
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          document.querySelectorAll('.score-fill').forEach(f => {
+            f.style.width = f.dataset.target + '%';
+          });
+        }, 80);
+      });
+    }
+
+    // Prefill lead capture form if user is logged in
+    prefillLeadFormWithCurrentUser();
+
+    const matchBtn = document.getElementById('exploreMatchBtn');
+    if (matchBtn) {
+      matchBtn.onclick = () => {
+        setActiveFilter(top.id);
+      };
+    }
   }
-}
+
+  let latestQuizSnapshot = null;
+  let registeredStudentData = null;
+
+  function prefillLeadFormWithCurrentUser() {
+    if (typeof UserStorage === 'undefined') return;
+    const currentUser = UserStorage.getCurrentUser();
+    if (!currentUser) return;
+
+    const nameInp = document.getElementById('regName');
+    const emailInp = document.getElementById('regEmail');
+    const phoneInp = document.getElementById('regPhone');
+    const streamInp = document.getElementById('regStream');
+    const cityInp = document.getElementById('regCity');
+
+    if (nameInp && !nameInp.value) nameInp.value = currentUser.name || '';
+    if (emailInp && !emailInp.value) emailInp.value = currentUser.email || '';
+    if (phoneInp && !phoneInp.value) phoneInp.value = currentUser.phone || '';
+    if (streamInp && !streamInp.value && currentUser.stream) streamInp.value = currentUser.stream;
+    if (cityInp && !cityInp.value) cityInp.value = currentUser.city || '';
+  }
+
+  window.handleUserRegistration = function (e) {
+    e.preventDefault();
+    const name = document.getElementById('regName')?.value.trim();
+    const phone = document.getElementById('regPhone')?.value.trim();
+    const email = document.getElementById('regEmail')?.value.trim();
+    const stream = document.getElementById('regStream')?.value;
+    const city = document.getElementById('regCity')?.value.trim() || 'India';
+
+    if (!name || !email || !phone || !stream) {
+      alert('Please fill out all required registration fields.');
+      return;
+    }
+
+    const topCat = latestQuizSnapshot?.topCategory || { name: 'Engineering & Tech', id: 'eng', pct: 85 };
+    
+    const userPayload = {
+      name,
+      phone,
+      email,
+      stream,
+      city,
+      topMatch: topCat.name,
+      topMatchId: topCat.id,
+      scorePct: topCat.pct || 90,
+      scores: latestQuizSnapshot?.scores || {}
+    };
+
+    let createdUser = null;
+    if (typeof UserStorage !== 'undefined') {
+      createdUser = UserStorage.addUser(userPayload);
+      if (!UserStorage.getCurrentUser()) {
+        UserStorage.setCurrentUser(createdUser);
+      }
+    }
+
+    registeredStudentData = createdUser || userPayload;
+
+    // Show success UI
+    const form = document.getElementById('leadRegisterForm');
+    const successBox = document.getElementById('lccSuccess');
+    const idEl = document.getElementById('lccId');
+
+    if (form) form.style.display = 'none';
+    if (successBox) successBox.style.display = 'block';
+    if (idEl && createdUser) idEl.textContent = createdUser.id;
+  };
+
+  window.downloadStudentReport = function () {
+    if (!registeredStudentData) {
+      alert('No registration data available to download.');
+      return;
+    }
+    const student = registeredStudentData;
+    const reportText = `
+=====================================================
+         NEXGEN CAREERS - STUDENT ORIENTATION REPORT
+=====================================================
+Student Name       : ${student.name}
+Registration ID    : ${student.id || 'NXG-TEMP'}
+Current Stream     : ${student.stream}
+Location           : ${student.city || 'India'}
+Email              : ${student.email}
+WhatsApp/Phone     : ${student.phone}
+Date Generated     : ${new Date().toLocaleDateString()}
+
+-----------------------------------------------------
+TOP RECOMMENDED DIRECTION
+-----------------------------------------------------
+Primary Match      : ${student.topMatch}
+Affinity Score     : ${student.scorePct}%
+
+FULL COMPASS CATEGORY AFFINITY:
+${(latestQuizSnapshot?.ranked || []).map(r => `• ${r.name.padEnd(35)} : ${r.pct}% (${r.score} pts)`).join('\n')}
+
+-----------------------------------------------------
+NEXT STEPS & ACTION PLAN
+-----------------------------------------------------
+1. Research recommended degree branches in your portal.
+2. Track monthly exam deadlines on the interactive calendar.
+3. Our senior counselor will connect with you on WhatsApp for 1-on-1 guidance.
+
+Official Portal: https://nexgencareers.com
+=====================================================
+`;
+
+    const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `NexGen_Report_${student.name.replace(/\s+/g, '_')}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
 /* ============ COURSE BRANCHES DIRECTORY (EXPANDABLE / SHRINKABLE) ============ */
 let activeBranchFilter = 'all';
@@ -833,3 +964,305 @@ function initScrollReveal() {
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
+
+/* ============ 7. STUDENT & ADMIN AUTHENTICATION UI ============ */
+
+function initAuthUI() {
+  renderNavbarAuth();
+  window.addEventListener('nexgen-auth-changed', () => {
+    renderNavbarAuth();
+  });
+}
+
+function renderNavbarAuth() {
+  const container = document.getElementById('navAuthContainer');
+  if (!container || typeof UserStorage === 'undefined') return;
+
+  const currentUser = UserStorage.getCurrentUser();
+
+  if (currentUser) {
+    const initials = (currentUser.name || 'ST')
+      .split(' ')
+      .map(p => p[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+
+    const firstName = (currentUser.name || 'Student').split(' ')[0];
+
+    container.innerHTML = `
+      <div class="user-nav-dropdown-wrap">
+        <button class="btn-nav-user" onclick="toggleUserDropdown(event)" aria-label="User Account Menu">
+          <div class="nav-user-avatar">${initials}</div>
+          <span class="nav-user-name">${escapeHtml(firstName)}</span>
+          <span class="nav-user-arrow">▾</span>
+        </button>
+        <div class="user-nav-menu" id="userNavMenu">
+          <div class="unm-head">
+            <div class="unm-avatar">${initials}</div>
+            <div class="unm-info">
+              <span class="unm-name">${escapeHtml(currentUser.name)}</span>
+              <span class="unm-email">${escapeHtml(currentUser.email || currentUser.id)}</span>
+            </div>
+          </div>
+          <div class="unm-score-tag">
+            <span>🧭 Top Match:</span>
+            <b>${escapeHtml(currentUser.topMatch || 'Pending Quiz')}</b>
+          </div>
+          <ul class="unm-links">
+            <li><a href="javascript:void(0)" onclick="openUserProfileModal(); closeUserDropdown();">👤 View My Profile &amp; Scores</a></li>
+            <li><a href="#quiz" onclick="restartQuiz(); closeUserDropdown();">🔄 Retake Compass Quiz</a></li>
+            <li><a href="admin.html" class="unm-admin-link">🔐 Admin Portal CRM</a></li>
+            <li class="unm-divider"></li>
+            <li><a href="javascript:void(0)" class="unm-logout-link" onclick="handleStudentSignOut()">Sign Out 🚪</a></li>
+          </ul>
+        </div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <button class="btn-nav-signin" onclick="openAuthModal('signin')">
+        <span>Sign In</span>
+      </button>
+    `;
+  }
+}
+
+window.toggleUserDropdown = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('userNavMenu');
+  if (menu) {
+    menu.classList.toggle('active');
+  }
+};
+
+window.closeUserDropdown = function () {
+  const menu = document.getElementById('userNavMenu');
+  if (menu) menu.classList.remove('active');
+};
+
+document.addEventListener('click', () => {
+  closeUserDropdown();
+});
+
+// Modal Operations
+window.openAuthModal = function (defaultTab = 'signin') {
+  const modal = document.getElementById('authModal');
+  const errBox = document.getElementById('authErrorMsg');
+  const succBox = document.getElementById('authSuccessMsg');
+
+  if (errBox) errBox.style.display = 'none';
+  if (succBox) succBox.style.display = 'none';
+
+  switchAuthTab(defaultTab);
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeAuthModal = function () {
+  const modal = document.getElementById('authModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+};
+
+window.switchAuthTab = function (tab) {
+  const tabSignIn = document.getElementById('tabSignIn');
+  const tabSignUp = document.getElementById('tabSignUp');
+  const tabAdmin = document.getElementById('tabAdmin');
+
+  const formSignIn = document.getElementById('signInForm');
+  const formSignUp = document.getElementById('signUpForm');
+  const contentAdmin = document.getElementById('adminTabContent');
+  const title = document.getElementById('authModalTitle');
+
+  const errBox = document.getElementById('authErrorMsg');
+  const succBox = document.getElementById('authSuccessMsg');
+  if (errBox) errBox.style.display = 'none';
+  if (succBox) succBox.style.display = 'none';
+
+  [tabSignIn, tabSignUp, tabAdmin].forEach(t => t && t.classList.remove('active'));
+  [formSignIn, formSignUp, contentAdmin].forEach(f => f && (f.style.display = 'none'));
+
+  if (tab === 'signup') {
+    if (tabSignUp) tabSignUp.classList.add('active');
+    if (formSignUp) formSignUp.style.display = 'block';
+    if (title) title.textContent = 'Create Free Student Profile';
+  } else if (tab === 'admin') {
+    if (tabAdmin) tabAdmin.classList.add('active');
+    if (contentAdmin) contentAdmin.style.display = 'block';
+    if (title) title.textContent = 'Admin Command Center';
+  } else {
+    if (tabSignIn) tabSignIn.classList.add('active');
+    if (formSignIn) formSignIn.style.display = 'block';
+    if (title) title.textContent = 'Sign In to NexGen';
+  }
+};
+
+window.handleStudentSignIn = function (e) {
+  e.preventDefault();
+  const identifier = document.getElementById('signInIdentifier')?.value.trim();
+  const password = document.getElementById('signInPassword')?.value.trim();
+  const errBox = document.getElementById('authErrorMsg');
+  const succBox = document.getElementById('authSuccessMsg');
+
+  if (!identifier) {
+    if (errBox) {
+      errBox.textContent = 'Please enter your email, student ID, or phone number.';
+      errBox.style.display = 'block';
+    }
+    return;
+  }
+
+  const result = UserStorage.signIn(identifier, password);
+  if (result.success) {
+    if (errBox) errBox.style.display = 'none';
+    if (succBox) {
+      succBox.textContent = `Welcome back, ${result.user.name}!`;
+      succBox.style.display = 'block';
+    }
+    setTimeout(() => {
+      closeAuthModal();
+      renderNavbarAuth();
+    }, 600);
+  } else {
+    if (errBox) {
+      errBox.textContent = result.message || 'Invalid login details.';
+      errBox.style.display = 'block';
+    }
+  }
+};
+
+window.handleStudentSignUp = function (e) {
+  e.preventDefault();
+  const name = document.getElementById('signUpName')?.value.trim();
+  const email = document.getElementById('signUpEmail')?.value.trim();
+  const phone = document.getElementById('signUpPhone')?.value.trim();
+  const stream = document.getElementById('signUpStream')?.value;
+  const city = document.getElementById('signUpCity')?.value.trim() || 'India';
+  const password = document.getElementById('signUpPassword')?.value.trim() || 'password123';
+
+  const errBox = document.getElementById('authErrorMsg');
+  const succBox = document.getElementById('authSuccessMsg');
+
+  if (!name || !email || !phone || !stream) {
+    if (errBox) {
+      errBox.textContent = 'Please fill out all required profile fields.';
+      errBox.style.display = 'block';
+    }
+    return;
+  }
+
+  const result = UserStorage.signUp({
+    name,
+    email,
+    phone,
+    stream,
+    city,
+    password,
+    topMatch: latestQuizSnapshot?.topCategory?.name || 'Pending Quiz Evaluation',
+    topMatchId: latestQuizSnapshot?.topCategory?.id || 'eng',
+    scorePct: latestQuizSnapshot?.topCategory?.pct || 0,
+    scores: latestQuizSnapshot?.scores || {}
+  });
+
+  if (result.success) {
+    if (errBox) errBox.style.display = 'none';
+    if (succBox) {
+      succBox.textContent = `Account created successfully! Welcome, ${result.user.name}.`;
+      succBox.style.display = 'block';
+    }
+    setTimeout(() => {
+      closeAuthModal();
+      renderNavbarAuth();
+    }, 600);
+  } else {
+    if (errBox) {
+      errBox.textContent = result.message || 'Failed to create account.';
+      errBox.style.display = 'block';
+    }
+  }
+};
+
+window.quickFillDemoStudent = function () {
+  const ident = document.getElementById('signInIdentifier');
+  const pass = document.getElementById('signInPassword');
+  if (ident) ident.value = 'aarav.sharma2026@gmail.com';
+  if (pass) pass.value = 'password123';
+};
+
+window.handleStudentSignOut = function () {
+  if (confirm('Are you sure you want to sign out?')) {
+    UserStorage.logoutUser();
+    closeUserProfileModal();
+    renderNavbarAuth();
+  }
+};
+
+// User Profile Modal
+window.openUserProfileModal = function () {
+  const currentUser = UserStorage.getCurrentUser();
+  if (!currentUser) {
+    openAuthModal('signin');
+    return;
+  }
+
+  const initials = (currentUser.name || 'ST')
+    .split(' ')
+    .map(p => p[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
+  const avatar = document.getElementById('profileAvatar');
+  const nameEl = document.getElementById('profileFullName');
+  const streamEl = document.getElementById('profileStream');
+  const cityEl = document.getElementById('profileCity');
+  const idEl = document.getElementById('profileId');
+  const statusEl = document.getElementById('profileStatus');
+  const emailEl = document.getElementById('profileEmail');
+  const phoneEl = document.getElementById('profilePhone');
+  const matchEl = document.getElementById('profileTopMatch');
+  const scoreEl = document.getElementById('profileScorePct');
+  const examsEl = document.getElementById('profileTargetExams');
+
+  if (avatar) avatar.textContent = initials;
+  if (nameEl) nameEl.textContent = currentUser.name;
+  if (streamEl) streamEl.textContent = currentUser.stream;
+  if (cityEl) cityEl.textContent = currentUser.city || 'India';
+  if (idEl) idEl.textContent = currentUser.id;
+  if (statusEl) statusEl.textContent = currentUser.status || 'Active Student';
+  if (emailEl) emailEl.textContent = currentUser.email || 'N/A';
+  if (phoneEl) phoneEl.textContent = currentUser.phone || 'N/A';
+  if (matchEl) matchEl.textContent = currentUser.topMatch || 'Take the quiz to find your direction';
+  if (scoreEl) scoreEl.textContent = `${currentUser.scorePct || 85}% Match`;
+  if (examsEl) examsEl.textContent = currentUser.targetExams || 'JEE, NEET, CUET, CLAT';
+
+  const modal = document.getElementById('userProfileModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+};
+
+window.closeUserProfileModal = function () {
+  const modal = document.getElementById('userProfileModal');
+  if (modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+};
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+

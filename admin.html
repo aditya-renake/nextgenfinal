@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal — NexGen Careers Student Intelligence</title>
+  <meta name="description" content="NexGen Careers Admin Command Center. Manage student registrations, analyze compass quiz score snapshots, update counseling notes, and view complete user dossiers.">
+  <meta name="theme-color" content="#070B18">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-body">
+
+  <!-- AMBIENT BACKGROUND GLOWS & CYBER GRID -->
+  <div class="bg-grid-pattern" aria-hidden="true"></div>
+  <div class="ambient-orb orb-1" aria-hidden="true"></div>
+  <div class="ambient-orb orb-2" aria-hidden="true"></div>
+  <div class="ambient-orb orb-3" aria-hidden="true"></div>
+
+  <!-- ================= 1. ADMIN AUTHENTICATION GATE / LOCK SCREEN ================= -->
+  <div class="admin-auth-gate" id="adminAuthGate">
+    <div class="admin-lock-card">
+      <div class="admin-lock-brand">
+        <svg class="brand-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <circle cx="14" cy="14" r="12.5" stroke="#F59E0B" stroke-width="1.4"/>
+          <path d="M14 6 L16.4 12.6 L14 22 L11.6 12.6 Z" fill="#F59E0B"/>
+        </svg>
+        <span>NexGen Careers</span>
+      </div>
+      <div class="admin-lock-icon">🔐</div>
+      <h2>Administrator Portal</h2>
+      <p class="admin-lock-sub">Enter verified administrative credentials to access student dossiers, quiz scores, and counseling pipelines.</p>
+
+      <div class="admin-alert-error" id="adminLoginError" style="display:none;"></div>
+
+      <form id="adminLoginForm" class="admin-lock-form">
+        <div class="form-group">
+          <label for="adminEmailInput">Admin Email / Username</label>
+          <input type="text" id="adminEmailInput" required placeholder="admin@nexgen.edu" value="admin@nexgen.edu" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="adminPassInput">Admin Password / Passcode</label>
+          <input type="password" id="adminPassInput" required placeholder="••••••••" value="admin123" autocomplete="current-password">
+        </div>
+        <div class="form-row-remember">
+          <label class="checkbox-label">
+            <input type="checkbox" id="adminRememberMe" checked>
+            <span>Remember admin session</span>
+          </label>
+          <button type="button" class="btn-link-action" id="adminDemoFillBtn">Autofill Demo Pass</button>
+        </div>
+        <button type="submit" class="btn-primary btn-block">
+          <span>Unlock Admin Command Center ↗</span>
+        </button>
+      </form>
+
+      <div class="admin-lock-footer">
+        <a href="index.html" class="back-home-link">← Return to NexGen Student App</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 2. ADMIN DASHBOARD CONTAINER ================= -->
+  <div class="admin-dashboard-layout" id="adminDashboard" style="display:none;">
+
+    <!-- TOP ADMIN NAVIGATION BAR -->
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <a href="index.html" class="brand admin-brand" title="Back to Student Portal">
+          <svg class="brand-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <circle cx="14" cy="14" r="12.5" stroke="#F59E0B" stroke-width="1.4"/>
+            <path d="M14 6 L16.4 12.6 L14 22 L11.6 12.6 Z" fill="#F59E0B"/>
+          </svg>
+          <span>NexGen Admin</span>
+        </a>
+        <span class="admin-env-pill">Production CRM</span>
+      </div>
+
+      <div class="admin-topbar-right">
+        <a href="index.html" class="btn-ghost btn-sm">
+          <span>🌐 Student Portal</span>
+        </a>
+        <button class="btn-ghost btn-sm" id="adminResetDemoBtn" title="Reset sample database">
+          <span>🔄 Reset Demo Data</span>
+        </button>
+        <div class="admin-user-pill">
+          <div class="admin-avatar">AD</div>
+          <div class="admin-user-info">
+            <span class="au-name">Lead Counselor</span>
+            <span class="au-role">admin@nexgen.edu</span>
+          </div>
+        </div>
+        <button class="btn-logout" id="adminLogoutBtn" title="Sign Out">
+          <span>Sign Out 🚪</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-container">
+
+        <!-- HEADER BANNER & ACTIONS -->
+        <div class="admin-header-row">
+          <div>
+            <p class="eyebrow">Student Intelligence &amp; Lead Management</p>
+            <h1 class="admin-page-title">Registered Students &amp; Profiles</h1>
+            <p class="admin-page-sub">View whole student details, compass career scores across 8 disciplines, counselor remarks, and direct contact avenues.</p>
+          </div>
+          <div class="admin-header-actions">
+            <button class="btn-ghost btn-outline-cyan" id="adminExportCsvBtn">
+              <span>📥 Export CSV</span>
+            </button>
+            <button class="btn-ghost" id="adminExportJsonBtn">
+              <span>📄 Export JSON</span>
+            </button>
+            <button class="btn-primary" id="adminAddStudentBtn">
+              <span>+ Add Student Lead</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KPI SUMMARY METRICS RIBBON -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon icon-blue">👥</div>
+            <div class="kpi-content">
+              <span class="kpi-label">TOTAL REGISTERED</span>
+              <h3 class="kpi-value" id="kpiTotalStudents">0</h3>
+              <span class="kpi-sub">Across All Streams</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-green">🟢</div>
+            <div class="kpi-content">
+              <span class="kpi-label">NEW INBOUND LEADS</span>
+              <h3 class="kpi-value" id="kpiNewLeads">0</h3>
+              <span class="kpi-sub">Awaiting Consultation</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-yellow">🟡</div>
+            <div class="kpi-content">
+              <span class="kpi-label">IN COUNSELING</span>
+              <h3 class="kpi-value" id="kpiInCounseling">0</h3>
+              <span class="kpi-sub">Active Roadmaps</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-purple">🟣</div>
+            <div class="kpi-content">
+              <span class="kpi-label">ENROLLED STUDENTS</span>
+              <h3 class="kpi-value" id="kpiEnrolled">0</h3>
+              <span class="kpi-sub">Admissions Locked</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-gold">🎯</div>
+            <div class="kpi-content">
+              <span class="kpi-label">AVG MATCH AFFINITY</span>
+              <h3 class="kpi-value" id="kpiAvgScore">0%</h3>
+              <span class="kpi-sub">Compass Clarity</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-icon icon-teal">🎓</div>
+            <div class="kpi-content">
+              <span class="kpi-label">TOP 12TH STREAM</span>
+              <h3 class="kpi-value" id="kpiTopStream" style="font-size: 18px;">—</h3>
+              <span class="kpi-sub">Highest Representation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEARCH & ADVANCED FILTER CONTROLS BAR -->
+        <div class="admin-controls-card">
+          <div class="admin-search-wrap">
+            <svg class="search-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="adminSearchInput" placeholder="Search by name, email, phone, city, student ID, or notes..." aria-label="Search students">
+          </div>
+
+          <div class="admin-filters-wrap">
+            <!-- Stream Filter -->
+            <select id="adminStreamFilter" class="admin-select" aria-label="Filter by stream">
+              <option value="all">All 12th Streams</option>
+              <option value="PCM">Science (PCM)</option>
+              <option value="PCB">Science (PCB)</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Humanities">Arts &amp; Humanities</option>
+              <option value="Dropper">Gap Year / Dropper</option>
+            </select>
+
+            <!-- Status Filter -->
+            <select id="adminStatusFilter" class="admin-select" aria-label="Filter by lead status">
+              <option value="all">All Lead Statuses</option>
+              <option value="New">🟢 New Leads</option>
+              <option value="Contacted">🔵 Contacted</option>
+              <option value="Counseling Scheduled">🟡 Counseling Scheduled</option>
+              <option value="Enrolled">🟣 Enrolled</option>
+              <option value="Archived">⚪ Archived</option>
+            </select>
+
+            <!-- Career Match Filter -->
+            <select id="adminCareerFilter" class="admin-select" aria-label="Filter by career match">
+              <option value="all">All Career Matches</option>
+              <option value="eng">🚀 AI &amp; Tech Engineering</option>
+              <option value="med">🩺 Medicine &amp; Surgery</option>
+              <option value="law">⚖️ Corporate Law &amp; Policy</option>
+              <option value="des">🎨 UI/UX &amp; Product Design</option>
+              <option value="com">📈 Chartered Accountancy</option>
+              <option value="sci">🔬 Pure Sciences &amp; Research</option>
+              <option value="media">🎬 Media &amp; Film</option>
+              <option value="gov">🎖️ National Defence &amp; Govt</option>
+            </select>
+
+            <!-- Sort Select -->
+            <select id="adminSortSelect" class="admin-select" aria-label="Sort students">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="score_high">Score: High → Low</option>
+              <option value="score_low">Score: Low → High</option>
+              <option value="name_asc">Name: A → Z</option>
+            </select>
+
+            <!-- View Switcher -->
+            <div class="view-switch-btns">
+              <button class="btn-view-mode active" id="btnViewTable" title="Table View">☰ Table</button>
+              <button class="btn-view-mode" id="btnViewCards" title="Cards View">⊞ Cards</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BULK ACTIONS FLOATING/INLINE TOOLBAR -->
+        <div class="admin-bulk-toolbar" id="adminBulkToolbar" style="display:none;">
+          <div class="bulk-left">
+            <span class="bulk-indicator">⚡ Selected <b id="bulkSelectedCount">0</b> students</span>
+          </div>
+          <div class="bulk-actions">
+            <span class="bulk-label">Change Status:</span>
+            <button class="btn-bulk-tag tag-new" onclick="handleBulkStatusChange('New')">New</button>
+            <button class="btn-bulk-tag tag-contacted" onclick="handleBulkStatusChange('Contacted')">Contacted</button>
+            <button class="btn-bulk-tag tag-scheduled" onclick="handleBulkStatusChange('Counseling Scheduled')">Scheduled</button>
+            <button class="btn-bulk-tag tag-enrolled" onclick="handleBulkStatusChange('Enrolled')">Enrolled</button>
+            <span class="bulk-divider"></span>
+            <button class="btn-bulk-delete" onclick="handleBulkDelete()">🗑️ Delete Selected</button>
+            <button class="btn-bulk-clear" onclick="clearBulkSelection()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- RESULTS COUNT BANNER -->
+        <div class="admin-count-row">
+          <span id="adminResultCount" class="result-count-text">Showing students</span>
+          <span class="admin-tip-text">💡 Tip: Click on any student row or ID to inspect their whole details and 8-category quiz score analysis.</span>
+        </div>
+
+        <!-- 1. TABLE VIEW CONTAINER -->
+        <div class="admin-table-card" id="adminTableContainer">
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th class="th-check"><input type="checkbox" id="selectAllStudents" title="Select All"></th>
+                  <th class="th-id">Student ID</th>
+                  <th class="th-student">Student Name &amp; City</th>
+                  <th class="th-contact">Contact Avenues</th>
+                  <th class="th-stream">12th Stream</th>
+                  <th class="th-match">Top Recommended Match</th>
+                  <th class="th-status">Lead Status</th>
+                  <th class="th-actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                <!-- Dynamically Rendered by js/admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 2. CARDS VIEW CONTAINER -->
+        <div class="admin-cards-grid" id="adminCardsContainer" style="display:none;">
+          <!-- Dynamically Rendered by js/admin.js -->
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div class="admin-empty-state" id="adminEmptyState" style="display:none;">
+          <div class="aes-icon">🔍</div>
+          <h3>No students match your filter criteria</h3>
+          <p>Try clearing your search query or switching your stream/status filter parameters.</p>
+          <button class="btn-ghost btn-outline-cyan" onclick="document.getElementById('adminSearchInput').value=''; document.getElementById('adminStreamFilter').value='all'; document.getElementById('adminStatusFilter').value='all'; document.getElementById('adminCareerFilter').value='all'; applyFiltersAndRender();">
+            Reset Filters
+          </button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ================= 3. WHOLE USER DETAILS MODAL (CORE REQUIREMENT) ================= -->
+  <div class="modal-overlay" id="wholeDetailsModal" role="dialog" aria-modal="true" aria-labelledby="wdName">
+    <div class="modal-backdrop" onclick="closeWholeDetailsModal()"></div>
+    <div class="modal-box modal-lg">
+      
+      <!-- Modal Top Header -->
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-badge-eyebrow">Comprehensive Student Dossier</span>
+          <h2 class="modal-title" id="wdName">Student Name</h2>
+        </div>
+        <button class="modal-close-btn" onclick="closeWholeDetailsModal()" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Student Primary Identity Card -->
+        <div class="wd-profile-banner">
+          <div class="wd-avatar-wrap">
+            <div class="wd-avatar" id="wdAvatar">AS</div>
+            <span class="status-badge" id="wdStatusBadge">New</span>
+          </div>
+          <div class="wd-profile-info">
+            <div class="wd-id-row">
+              <span class="wd-id-pill" id="wdId">NXG-2026-0891</span>
+              <span class="wd-meta-dot">•</span>
+              <span class="wd-stream-pill" id="wdStream">Class 12 Science (PCM)</span>
+              <span class="wd-meta-dot">•</span>
+              <span class="wd-city-text" id="wdCity">Pune, Maharashtra</span>
+            </div>
+            <div class="wd-timestamps">
+              <span>📅 Registered: <b id="wdRegDate">—</b></span>
+              <span>⚡ Last Active: <b id="wdLastActive">—</b></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Direct Contact & Communication Bar -->
+        <div class="wd-contact-bar">
+          <div class="wd-contact-item">
+            <span class="wd-ci-label">Email Address</span>
+            <a href="#" id="wdEmailLink" class="wd-ci-val wd-email-link">student@email.com</a>
+          </div>
+          <div class="wd-contact-item">
+            <span class="wd-ci-label">WhatsApp / Phone</span>
+            <a href="#" id="wdPhoneLink" class="wd-ci-val wd-phone-link">+91 98765 43210</a>
+          </div>
+          <div class="wd-contact-actions">
+            <a href="#" id="wdWaBtn" target="_blank" class="btn-wa-action">
+              <span>💬 Direct WhatsApp</span>
+            </a>
+            <button class="btn-ghost btn-sm" onclick="downloadModalUserReport()">
+              <span>📄 Download Dossier</span>
+            </button>
+            <button class="btn-ghost btn-sm" onclick="copyModalUserJson()">
+              <span>📋 Copy JSON</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Two Column Analysis Grid -->
+        <div class="wd-grid-2col">
+          
+          <!-- LEFT: Compass Quiz Scores & Breakdown -->
+          <div class="wd-col-card">
+            <div class="wd-card-head">
+              <span class="wd-ch-icon">🧭</span>
+              <h4>Compass Career Analysis</h4>
+            </div>
+
+            <!-- Top Match Spotlight -->
+            <div class="wd-top-match-spotlight">
+              <span class="wd-tms-icon" id="wdTopMatchIcon">🚀</span>
+              <div class="wd-tms-content">
+                <span class="wd-tms-label">TOP RECOMMENDED DIRECTION</span>
+                <h3 class="wd-tms-title" id="wdTopMatchTitle">AI, Tech &amp; Computer Engineering</h3>
+              </div>
+              <div class="wd-tms-score" id="wdTopMatchPct">94%</div>
+            </div>
+
+            <!-- Full 8 Category Score Breakdown -->
+            <h5 class="wd-section-subtitle">Affinity Breakdown Across All 8 Disciplines</h5>
+            <div class="score-breakdown-container" id="wdScoreBreakdownList">
+              <!-- Dynamically populated with all 8 category bars -->
+            </div>
+
+            <!-- Academic Aspirations -->
+            <div class="wd-aspirations-box">
+              <div class="asp-item">
+                <span class="asp-label">Target Entrance Exams:</span>
+                <span class="asp-val" id="wdTargetExams">JEE Main, JEE Advanced, BITSAT</span>
+              </div>
+              <div class="asp-item">
+                <span class="asp-label">Target Colleges / Institutes:</span>
+                <span class="asp-val" id="wdTargetColleges">IIT Bombay, BITS Pilani</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Counselor Notepad & Lead Management -->
+          <div class="wd-col-card">
+            <div class="wd-card-head">
+              <span class="wd-ch-icon">📝</span>
+              <h4>Counselor Remarks &amp; Lead Management</h4>
+            </div>
+
+            <div class="wd-counselor-form">
+              <div class="form-group">
+                <label for="wdStatusSelect">Update Lead Stage / Status</label>
+                <select id="wdStatusSelect" class="admin-select full-width">
+                  <option value="New">🟢 New Inbound Lead</option>
+                  <option value="Contacted">🔵 Contacted / Initial Discussion Done</option>
+                  <option value="Counseling Scheduled">🟡 1-on-1 Counseling Booked</option>
+                  <option value="Enrolled">🟣 Enrolled in Guidance Batch / College Locked</option>
+                  <option value="Archived">⚪ Archived / Dropped</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="wdCounselorNotes">Counselor Notes &amp; Action Plan</label>
+                <textarea id="wdCounselorNotes" class="admin-textarea" rows="8" placeholder="Log student discussion notes, cutoffs shared, target colleges, parental preferences, and next follow-up dates..."></textarea>
+              </div>
+
+              <div class="wd-save-row">
+                <button type="button" class="btn-primary" onclick="saveModalCounselorNotes()">
+                  <span>💾 Save Notes &amp; Status</span>
+                </button>
+                <span class="save-notice" id="wdSaveNotice" style="display:none;">✓ Notes updated successfully!</span>
+              </div>
+            </div>
+
+            <!-- Collapsible Raw JSON Data Inspector -->
+            <details class="wd-json-details">
+              <summary>🔍 Raw Student Object Inspector (JSON)</summary>
+              <pre class="wd-json-pre" id="wdJsonRaw"></pre>
+            </details>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-ghost" onclick="closeWholeDetailsModal()">Close Dossier</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 4. ADD / EDIT STUDENT MODAL ================= -->
+  <div class="modal-overlay" id="studentFormModal" role="dialog" aria-modal="true" aria-labelledby="studentFormTitle">
+    <div class="modal-backdrop" onclick="closeStudentFormModal()"></div>
+    <div class="modal-box modal-md">
+      <div class="modal-header">
+        <h3 class="modal-title" id="studentFormTitle">Add New Student Lead</h3>
+        <button class="modal-close-btn" onclick="closeStudentFormModal()">✕</button>
+      </div>
+
+      <form id="studentEditForm">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="editName">Full Name *</label>
+              <input type="text" id="editName" required placeholder="e.g. Priya Sharma">
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email Address *</label>
+              <input type="email" id="editEmail" required placeholder="priya@gmail.com">
+            </div>
+            <div class="form-group">
+              <label for="editPhone">WhatsApp / Phone *</label>
+              <input type="tel" id="editPhone" required placeholder="+91 98765 43210">
+            </div>
+            <div class="form-group">
+              <label for="editStream">Current 12th Stream *</label>
+              <select id="editStream" required>
+                <option value="Class 12 Science (PCM)">Class 12 Science (PCM)</option>
+                <option value="Class 12 Science (PCB)">Class 12 Science (PCB)</option>
+                <option value="Class 12 Commerce with Maths">Class 12 Commerce with Maths</option>
+                <option value="Class 12 Commerce">Class 12 Commerce</option>
+                <option value="Class 12 Arts &amp; Humanities">Class 12 Arts &amp; Humanities</option>
+                <option value="12th Passed / Gap Year Dropper">12th Passed / Gap Year Dropper</option>
+                <option value="Class 10 / 11 Student">Class 10 / 11 Student</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editCity">City / State</label>
+              <input type="text" id="editCity" placeholder="e.g. Pune, Maharashtra">
+            </div>
+            <div class="form-group">
+              <label for="editStatus">Lead Status</label>
+              <select id="editStatus">
+                <option value="New">New Lead</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Counseling Scheduled">Counseling Scheduled</option>
+                <option value="Enrolled">Enrolled</option>
+                <option value="Archived">Archived</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editTopMatch">Top Recommended Match</label>
+              <select id="editTopMatch">
+                <option value="eng">AI, Tech &amp; Engineering</option>
+                <option value="med">Medicine &amp; Surgery</option>
+                <option value="law">Corporate Law &amp; Policy</option>
+                <option value="des">UI/UX &amp; Design</option>
+                <option value="com">Chartered Accountancy &amp; Finance</option>
+                <option value="sci">Pure Sciences &amp; Research</option>
+                <option value="media">Digital Media &amp; Journalism</option>
+                <option value="gov">Defence &amp; Public Services</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editScorePct">Match Score (%)</label>
+              <input type="number" id="editScorePct" min="10" max="100" value="85">
+            </div>
+            <div class="form-group full-width">
+              <label for="editTargetExams">Target Entrance Exams</label>
+              <input type="text" id="editTargetExams" placeholder="e.g. JEE Main, BITSAT, CUET">
+            </div>
+            <div class="form-group full-width">
+              <label for="editTargetColleges">Target Colleges / Institutes</label>
+              <input type="text" id="editTargetColleges" placeholder="e.g. IIT Bombay, BITS Pilani">
+            </div>
+            <div class="form-group full-width">
+              <label for="editNotes">Counselor Notes</label>
+              <textarea id="editNotes" rows="3" placeholder="Additional student background and goals..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" onclick="closeStudentFormModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Student Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
