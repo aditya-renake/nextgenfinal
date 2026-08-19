@@ -98,12 +98,77 @@
     }
   }
 
-  // ================= 2. DASHBOARD & DATA INITIALIZATION ================= //
+  // ================= 2. DASHBOARD & REAL-TIME DATA INITIALIZATION ================= //
+
+  let lastKnownUserIds = new Set();
+  let livePollInterval = null;
 
   function loadAdminDashboard() {
     allUsers = UserStorage.getUsers();
+    lastKnownUserIds = new Set(allUsers.map(u => u.id));
     setupEventListeners();
+    setupRealtimeListeners();
     applyFiltersAndRender();
+  }
+
+  function setupRealtimeListeners() {
+    // Cross-tab storage event
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'nexgen_registered_users') {
+        handleIncomingRealtimeUpdate();
+      }
+    });
+
+    // In-app custom event
+    window.addEventListener('nexgen-users-updated', () => {
+      handleIncomingRealtimeUpdate();
+    });
+
+    // 2.5 second polling fallback for active real-time updates
+    if (livePollInterval) clearInterval(livePollInterval);
+    livePollInterval = setInterval(() => {
+      handleIncomingRealtimeUpdate();
+    }, 2500);
+  }
+
+  function handleIncomingRealtimeUpdate() {
+    const latestUsers = UserStorage.getUsers();
+    
+    // Check if new user arrived
+    const newStudents = latestUsers.filter(u => !lastKnownUserIds.has(u.id));
+    if (newStudents.length > 0) {
+      newStudents.forEach(st => {
+        showLiveToast(st);
+      });
+    }
+
+    lastKnownUserIds = new Set(latestUsers.map(u => u.id));
+    
+    // Re-render if count or timestamps changed
+    if (JSON.stringify(latestUsers) !== JSON.stringify(allUsers)) {
+      allUsers = latestUsers;
+      applyFiltersAndRender();
+    }
+  }
+
+  function showLiveToast(student) {
+    const toast = document.getElementById('adminLiveToast');
+    const titleEl = document.getElementById('altTitle');
+    const subEl = document.getElementById('altSub');
+    if (!toast) return;
+
+    if (titleEl) titleEl.textContent = `New Registration: ${student.name || 'Student'}`;
+    if (subEl) subEl.textContent = `${student.stream || 'Class 12'} • ${student.topMatch || 'Compass Quiz Complete'}`;
+
+    toast.style.display = 'flex';
+    toast.classList.add('toast-slide-in');
+
+    setTimeout(() => {
+      toast.classList.remove('toast-slide-in');
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 300);
+    }, 4500);
   }
 
   function setupEventListeners() {
@@ -172,12 +237,12 @@
       });
     }
 
-    // Reset demo dataset
-    const resetDemoBtn = document.getElementById('adminResetDemoBtn');
-    if (resetDemoBtn) {
-      resetDemoBtn.addEventListener('click', () => {
-        if (confirm('Reset database to realistic initial sample student records?')) {
-          allUsers = UserStorage.resetToDemo();
+    // Clear All Records button
+    const clearAllBtn = document.getElementById('adminClearAllBtn');
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to permanently clear all student records from the database?')) {
+          UserStorage.clearAll();
           selectedUserIds.clear();
           applyFiltersAndRender();
         }
@@ -986,12 +1051,23 @@ Generated via NexGen Careers Admin Portal • Confidential Record
   }
 
   function formatDate(iso) {
-    if (!iso) return 'Recent';
+    if (!iso) return 'Just now';
     try {
       const d = new Date(iso);
+      const now = new Date();
+      const diffMs = now - d;
+      const diffSecs = Math.floor(diffMs / 1000);
+      const diffMins = Math.floor(diffSecs / 60);
+      const diffHours = Math.floor(diffMins / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffSecs < 45) return '⚡ Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffDays === 1) return 'Yesterday';
       return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     } catch (e) {
-      return 'Recent';
+      return 'Just now';
     }
   }
 

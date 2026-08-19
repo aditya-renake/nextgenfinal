@@ -82,14 +82,18 @@
       </div>
 
       <div class="admin-topbar-right">
-        <a href="index.html" class="btn-ghost btn-sm">
-          <span>🌐 Student Portal</span>
+        <div class="live-sync-indicator" title="Real-time live synchronization active">
+          <span class="live-pulse-dot"></span>
+          <span class="live-sync-text">LIVE REAL-TIME FEED</span>
+        </div>
+        <a href="index.html" class="btn-ghost btn-sm" target="_blank" title="Open student website in new tab">
+          <span>🌐 Open Student Portal ↗</span>
         </a>
-        <button class="btn-ghost btn-sm" id="adminResetDemoBtn" title="Reset sample database">
-          <span>🔄 Reset Demo Data</span>
+        <button class="btn-ghost btn-sm" id="adminClearAllBtn" title="Clear all user records from database">
+          <span>🗑️ Clear All</span>
         </button>
         <div class="admin-user-pill">
-          <div class="admin-avatar">AD</div>
+          <div class="admin-avatar">AR</div>
           <div class="admin-user-info">
             <span class="au-name">Aditya Renake</span>
             <span class="au-role">aditya.renake@outlook.com</span>
@@ -295,12 +299,17 @@
 
         <!-- EMPTY STATE -->
         <div class="admin-empty-state" id="adminEmptyState" style="display:none;">
-          <div class="aes-icon">🔍</div>
-          <h3>No students match your filter criteria</h3>
-          <p>Try clearing your search query or switching your stream/status filter parameters.</p>
-          <button class="btn-ghost btn-outline-cyan" onclick="document.getElementById('adminSearchInput').value=''; document.getElementById('adminStreamFilter').value='all'; document.getElementById('adminStatusFilter').value='all'; document.getElementById('adminCareerFilter').value='all'; applyFiltersAndRender();">
-            Reset Filters
-          </button>
+          <div class="aes-icon">⚡</div>
+          <h3>Waiting for student entries...</h3>
+          <p>No student records registered yet. Real-time registrations and quiz completions on the student portal will appear here instantly!</p>
+          <div class="empty-state-actions">
+            <a href="index.html" target="_blank" class="btn-primary">
+              <span>Take Quiz on Student Portal ↗</span>
+            </a>
+            <button class="btn-ghost" id="adminAddFirstBtn" onclick="openStudentFormModal(null)">
+              <span>+ Add Student Manually</span>
+            </button>
+          </div>
         </div>
 
       </div>
@@ -543,6 +552,15 @@
           <button type="submit" class="btn-primary">Save Student Record</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- FLOATING REAL-TIME REGISTRATION TOAST -->
+  <div class="admin-live-toast" id="adminLiveToast" style="display:none;">
+    <div class="alt-icon">⚡</div>
+    <div class="alt-content">
+      <span class="alt-title" id="altTitle">New Student Registration</span>
+      <span class="alt-sub" id="altSub">Just now</span>
     </div>
   </div>
 
