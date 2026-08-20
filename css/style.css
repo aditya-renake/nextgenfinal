@@ -4395,4 +4395,68 @@ footer {
   margin-top: 14px;
 }
 
+/* Auto-Generated Passcode & Email Banner in Lead Success Box */
+.lcc-passcode-box {
+  margin: 16px 0;
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+}
+
+.lpb-icon {
+  font-size: 22px;
+  margin-top: 2px;
+}
+
+.lpb-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lpb-title {
+  font-size: 13px;
+  color: #E2E8F0;
+}
+
+.lpb-title b {
+  color: var(--cyan);
+}
+
+.lpb-code-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #040710;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #CBD5E1;
+}
+
+.lpb-passcode {
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.lpb-note {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.pd-passcode-val {
+  font-family: var(--mono);
+  color: var(--gold) !important;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
 

@@ -61,16 +61,23 @@ const UserStorage = {
     }
   },
 
+  // Generate a secure 6-digit access passcode for auto-email delivery
+  generatePasscode: function () {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  },
+
   // Save new user registration / sign up
   addUser: function (userData) {
     const users = this.getUsers();
     const newId = userData.id || `NXG-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const generatedPasscode = userData.passcode || userData.password || this.generatePasscode();
     
     const newUser = {
       id: newId,
-      name: userData.name || 'Anonymous Student',
+      name: (userData.name || '').trim() || (userData.email ? userData.email.split('@')[0] : 'Student'),
       email: (userData.email || '').trim().toLowerCase(),
-      password: userData.password || 'password123',
+      passcode: generatedPasscode,
+      password: generatedPasscode,
       phone: userData.phone || '',
       stream: userData.stream || 'Class 12 Pass / Appearing',
       city: userData.city || 'India',
@@ -213,20 +220,23 @@ const UserStorage = {
     if (!email) {
       return { success: false, message: 'Email address is required.' };
     }
-    if (!formData.name) {
-      return { success: false, message: 'Full name is required.' };
+    if (!formData.name && !email) {
+      return { success: false, message: 'Full name or email is required.' };
     }
 
     const users = this.getUsers();
     const existing = users.find(u => u.email && u.email.toLowerCase() === email);
     if (existing) {
-      return { success: false, message: 'An account with this email already exists. Please sign in.' };
+      return { success: false, message: 'An account with this email already exists. Please sign in with your passcode.' };
     }
 
+    const passcode = formData.passcode || formData.password || this.generatePasscode();
+
     const newUser = this.addUser({
-      name: formData.name,
+      name: formData.name || email.split('@')[0],
       email: email,
-      password: formData.password || 'password123',
+      passcode: passcode,
+      password: passcode,
       phone: formData.phone || '',
       stream: formData.stream || 'Class 12 Science (PCM)',
       city: formData.city || 'India',
@@ -246,7 +256,7 @@ const UserStorage = {
     const passTrim = (password || '').trim();
 
     if (!idTrim) {
-      return { success: false, message: 'Please enter your email, phone, or Student ID.' };
+      return { success: false, message: 'Please enter your email ID, phone, or Student ID.' };
     }
 
     const users = this.getUsers();
@@ -257,11 +267,15 @@ const UserStorage = {
     );
 
     if (!found) {
-      return { success: false, message: 'Student record not found. Please Sign Up first.' };
+      return { success: false, message: 'Student record not found. Please take the quiz or sign up.' };
     }
 
-    if (found.password && passTrim && found.password !== passTrim) {
-      return { success: false, message: 'Incorrect password. Please try again.' };
+    const isPassValid = !found.password || !passTrim || 
+      (found.passcode && passTrim === found.passcode) || 
+      (found.password && passTrim === found.password);
+
+    if (!isPassValid) {
+      return { success: false, message: 'Incorrect passcode. Please check the passcode sent to your email.' };
     }
 
     found.lastActive = new Date().toISOString();

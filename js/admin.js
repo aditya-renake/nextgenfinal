@@ -692,6 +692,7 @@
     setText('wdCity', user.city || 'India');
     setText('wdRegDate', formatDateFull(user.registeredAt));
     setText('wdLastActive', formatDateFull(user.lastActive || user.registeredAt));
+    setText('wdPasscode', user.passcode || user.password || 'N/A');
     setText('wdStatusBadge', user.status || 'New');
 
     const statusBadgeEl = document.getElementById('wdStatusBadge');

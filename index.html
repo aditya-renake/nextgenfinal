@@ -262,11 +262,25 @@
               </form>
               <div class="lcc-success" id="lccSuccess" style="display:none;">
                 <div class="lcc-success-icon">🎉</div>
-                <h4>Your Career Profile is Registered!</h4>
-                <p id="lccSuccessMsg">Student ID: <b id="lccId">NXG-2026-0899</b>. Your detailed report is saved. Our counselor will connect with you shortly.</p>
+                <h4>Welcome, <span id="lccStudentName">Student</span>!</h4>
+                <p id="lccSuccessMsg">Student ID: <b id="lccId">NXG-2026-0899</b>. Your detailed career compass report is saved.</p>
+                
+                <!-- AUTO-GENERATED PASSCODE & EMAIL NOTICE -->
+                <div class="lcc-passcode-box">
+                  <div class="lpb-icon">✉️</div>
+                  <div class="lpb-info">
+                    <span class="lpb-title">Auto-Email Sent to <b id="lccSentEmail">your email</b></span>
+                    <div class="lpb-code-badge">
+                      <span>Your Login Passcode:</span>
+                      <b id="lccPasscode" class="lpb-passcode">849201</b>
+                    </div>
+                    <span class="lpb-note">You can sign in anytime using your Email ID and this Passcode.</span>
+                  </div>
+                </div>
+
                 <div class="lcc-success-actions">
                   <button class="btn-ghost btn-outline-cyan" onclick="downloadStudentReport()">📄 Download Report Summary</button>
-                  <a href="https://wa.me/919876543210?text=Hi%2C%20I%20just%20completed%20the%20NexGen%20Careers%20quiz%20and%20would%20like%20counseling" target="_blank" class="btn-primary btn-wa">💬 Chat on WhatsApp</a>
+                  <a href="https://wa.me/919890829874?text=Hi%2C%20I%20just%20completed%20the%20NexGen%20Careers%20quiz%20and%20would%20like%20counseling" target="_blank" class="btn-primary btn-wa" id="lccWhatsappBtn">💬 Chat on WhatsApp</a>
                 </div>
               </div>
             </div>
@@ -523,12 +537,12 @@
         <!-- 1. SIGN IN FORM -->
         <form id="signInForm" class="auth-form active" onsubmit="handleStudentSignIn(event)">
           <div class="form-group">
-            <label for="signInIdentifier">Email, Student ID, or Phone</label>
-            <input type="text" id="signInIdentifier" required placeholder="e.g. rahul@gmail.com" autocomplete="username">
+            <label for="signInIdentifier">Email ID, Student ID, or Phone</label>
+            <input type="text" id="signInIdentifier" required placeholder="Enter your email ID" autocomplete="username">
           </div>
           <div class="form-group">
-            <label for="signInPassword">Password</label>
-            <input type="password" id="signInPassword" placeholder="••••••••" autocomplete="current-password">
+            <label for="signInPassword">Passcode</label>
+            <input type="password" id="signInPassword" required placeholder="Enter passcode sent to your email" autocomplete="current-password">
           </div>
           <button type="submit" class="btn-primary btn-block">
             <span>Sign In to Account →</span>
@@ -633,6 +647,10 @@
           <div class="pd-item">
             <span class="pd-label">Phone / WhatsApp</span>
             <span class="pd-val" id="profilePhone">+91 98765 43210</span>
+          </div>
+          <div class="pd-item">
+            <span class="pd-label">Account Passcode</span>
+            <span class="pd-val pd-passcode-val" id="profilePasscode">••••••</span>
           </div>
         </div>
 

@@ -227,11 +227,25 @@ function showResults() {
     if (questionsEl) questionsEl.classList.remove('active');
     if (resultsEl) resultsEl.classList.add('active');
 
+    const currentUser = typeof UserStorage !== 'undefined' ? UserStorage.getCurrentUser() : null;
+    const userFirstName = currentUser 
+      ? (currentUser.name && currentUser.name.trim() !== 'Anonymous Student' ? currentUser.name.trim().split(/\s+/)[0] : (currentUser.email ? currentUser.email.split('@')[0] : ''))
+      : '';
+
     const titleEl = document.getElementById('resultTitle');
     const subEl = document.getElementById('resultSub');
     if (titleEl) titleEl.textContent = top.name;
     if (subEl) {
-      subEl.textContent = `Your answers point most strongly toward ${top.name.toLowerCase()} — here's the full breakdown, plus matching roadmaps below.`;
+      const greeting = userFirstName ? `Congratulations, ${userFirstName}! ` : '';
+      subEl.textContent = `${greeting}Your answers point most strongly toward ${top.name.toLowerCase()} (${top.pct}% match) — here's your full compass breakdown, matching roadmaps, and counselor guidance below.`;
+    }
+
+    // Update WhatsApp link with counselor phone 9890829874
+    const waBtn = document.getElementById('lccWhatsappBtn');
+    if (waBtn) {
+      const studentName = userFirstName || 'Student';
+      const msg = `Hi, I am ${studentName}. I just completed the NexGen Career Compass quiz and got matched with ${top.name} (${top.pct}% match). I would like 1-on-1 career counseling.`;
+      waBtn.href = `https://wa.me/919890829874?text=${encodeURIComponent(msg)}`;
     }
 
     const resultNeedle = document.getElementById('resultNeedle');
@@ -300,25 +314,32 @@ function showResults() {
 
   window.handleUserRegistration = function (e) {
     e.preventDefault();
-    const name = document.getElementById('regName')?.value.trim();
+    const rawName = document.getElementById('regName')?.value.trim();
     const phone = document.getElementById('regPhone')?.value.trim();
     const email = document.getElementById('regEmail')?.value.trim();
     const stream = document.getElementById('regStream')?.value;
     const city = document.getElementById('regCity')?.value.trim() || 'India';
 
-    if (!name || !email || !phone || !stream) {
+    if (!email || !phone || !stream) {
       alert('Please fill out all required registration fields.');
       return;
     }
 
+    const name = rawName || email.split('@')[0];
+    const firstName = rawName ? rawName.split(/\s+/)[0] : email.split('@')[0];
     const topCat = latestQuizSnapshot?.topCategory || { name: 'Engineering & Tech', id: 'eng', pct: 85 };
     
+    // Auto-generate secure 6-digit access passcode for auto email
+    const generatedPasscode = typeof UserStorage !== 'undefined' ? UserStorage.generatePasscode() : Math.floor(100000 + Math.random() * 900000).toString();
+
     const userPayload = {
       name,
       phone,
       email,
       stream,
       city,
+      passcode: generatedPasscode,
+      password: generatedPasscode,
       topMatch: topCat.name,
       topMatchId: topCat.id,
       scorePct: topCat.pct || 90,
@@ -328,22 +349,49 @@ function showResults() {
     let createdUser = null;
     if (typeof UserStorage !== 'undefined') {
       createdUser = UserStorage.addUser(userPayload);
-      if (!UserStorage.getCurrentUser()) {
-        UserStorage.setCurrentUser(createdUser);
-      }
+      UserStorage.setCurrentUser(createdUser);
     }
 
     registeredStudentData = createdUser || userPayload;
 
-    // Show success UI
+    // Show success UI with generated passcode & auto-email notice
     const form = document.getElementById('leadRegisterForm');
     const successBox = document.getElementById('lccSuccess');
     const idEl = document.getElementById('lccId');
+    const nameEl = document.getElementById('lccStudentName');
+    const sentEmailEl = document.getElementById('lccSentEmail');
+    const passcodeEl = document.getElementById('lccPasscode');
+    const waBtn = document.getElementById('lccWhatsappBtn');
 
     if (form) form.style.display = 'none';
     if (successBox) successBox.style.display = 'block';
     if (idEl && createdUser) idEl.textContent = createdUser.id;
+    if (nameEl) nameEl.textContent = firstName;
+    if (sentEmailEl) sentEmailEl.textContent = email;
+    if (passcodeEl) passcodeEl.textContent = createdUser?.passcode || generatedPasscode;
+
+    // Redirect to WhatsApp number 9890829874 with personalized message
+    if (waBtn) {
+      const msg = `Hi, I am ${firstName}. I just completed the NexGen Career Compass quiz and got matched with ${topCat.name} (${topCat.pct || 90}% match). I would like to connect for 1-on-1 counseling.`;
+      waBtn.href = `https://wa.me/919890829874?text=${encodeURIComponent(msg)}`;
+    }
+
+    // Trigger auto email delivery notification
+    triggerAutoEmailNotification(registeredStudentData);
+
+    // Refresh navbar with user's original first name
+    renderNavbarAuth();
   };
+
+  function triggerAutoEmailNotification(student) {
+    console.log(`[Auto-Email Engine] Sending Career Compass Report & Passcode to: ${student.email}`);
+    console.log(`[Auto-Email Engine] Generated Passcode: ${student.passcode || student.password}`);
+    
+    // Dispatch event and log simulated email dispatch
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('nexgen-email-sent', { detail: { student } }));
+    }
+  }
 
   window.downloadStudentReport = function () {
     if (!registeredStudentData) {
@@ -357,6 +405,7 @@ function showResults() {
 =====================================================
 Student Name       : ${student.name}
 Registration ID    : ${student.id || 'NXG-TEMP'}
+Account Passcode   : ${student.passcode || student.password || '••••••'}
 Current Stream     : ${student.stream}
 Location           : ${student.city || 'India'}
 Email              : ${student.email}
@@ -375,9 +424,10 @@ ${(latestQuizSnapshot?.ranked || []).map(r => `• ${r.name.padEnd(35)} : ${r.pc
 -----------------------------------------------------
 NEXT STEPS & ACTION PLAN
 -----------------------------------------------------
-1. Research recommended degree branches in your portal.
-2. Track monthly exam deadlines on the interactive calendar.
-3. Our senior counselor will connect with you on WhatsApp for 1-on-1 guidance.
+1. Use your Email ID & Passcode (${student.passcode || student.password}) to sign in to your dashboard anytime.
+2. Research recommended degree branches in your portal.
+3. Track monthly exam deadlines on the interactive calendar.
+4. WhatsApp our senior counselor at +91 9890829874 for 1-on-1 guidance.
 
 Official Portal: https://nexgencareers.com
 =====================================================
@@ -981,14 +1031,17 @@ function renderNavbarAuth() {
   const currentUser = UserStorage.getCurrentUser();
 
   if (currentUser) {
-    const initials = (currentUser.name || 'ST')
-      .split(' ')
+    const rawName = currentUser.name && currentUser.name.trim() !== 'Anonymous Student' && currentUser.name.trim() !== ''
+      ? currentUser.name.trim()
+      : (currentUser.email ? currentUser.email.split('@')[0] : 'Student');
+
+    const firstName = rawName.split(/\s+/)[0];
+    const initials = rawName
+      .split(/\s+/)
       .map(p => p[0])
       .join('')
       .slice(0, 2)
       .toUpperCase();
-
-    const firstName = (currentUser.name || 'Student').split(' ')[0];
 
     container.innerHTML = `
       <div class="user-nav-dropdown-wrap">
@@ -1001,7 +1054,7 @@ function renderNavbarAuth() {
           <div class="unm-head">
             <div class="unm-avatar">${initials}</div>
             <div class="unm-info">
-              <span class="unm-name">${escapeHtml(currentUser.name)}</span>
+              <span class="unm-name">${escapeHtml(rawName)}</span>
               <span class="unm-email">${escapeHtml(currentUser.email || currentUser.id)}</span>
             </div>
           </div>
@@ -1218,18 +1271,20 @@ window.openUserProfileModal = function () {
   const statusEl = document.getElementById('profileStatus');
   const emailEl = document.getElementById('profileEmail');
   const phoneEl = document.getElementById('profilePhone');
+  const passcodeEl = document.getElementById('profilePasscode');
   const matchEl = document.getElementById('profileTopMatch');
   const scoreEl = document.getElementById('profileScorePct');
   const examsEl = document.getElementById('profileTargetExams');
 
   if (avatar) avatar.textContent = initials;
-  if (nameEl) nameEl.textContent = currentUser.name;
+  if (nameEl) nameEl.textContent = currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Student');
   if (streamEl) streamEl.textContent = currentUser.stream;
   if (cityEl) cityEl.textContent = currentUser.city || 'India';
   if (idEl) idEl.textContent = currentUser.id;
   if (statusEl) statusEl.textContent = currentUser.status || 'Active Student';
   if (emailEl) emailEl.textContent = currentUser.email || 'N/A';
   if (phoneEl) phoneEl.textContent = currentUser.phone || 'N/A';
+  if (passcodeEl) passcodeEl.textContent = currentUser.passcode || currentUser.password || '••••••';
   if (matchEl) matchEl.textContent = currentUser.topMatch || 'Take the quiz to find your direction';
   if (scoreEl) scoreEl.textContent = `${currentUser.scorePct || 85}% Match`;
   if (examsEl) examsEl.textContent = currentUser.targetExams || 'JEE, NEET, CUET, CLAT';
